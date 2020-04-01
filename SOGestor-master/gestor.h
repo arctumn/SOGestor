@@ -37,21 +37,16 @@ char ** atribuidorDeInstrucoes(char *nomeFich, processo * processoAtual){ // DEV
     char string[20];
     char *arraydestrings[90];
     int i = 0;
-
-
     if (fp1 == NULL){
         perror("NAO EXISTE O FICHEIRO\n");
         return NULL;
     }
-
     while(fgets(string,sizeof(string),fp1) != 0){
         arraydestrings[i] = string;
         i++;
     }
-
     fclose(fp1);
     i=0;
-
     while(!strcmp(arraydestrings[i],"T")){
         if(!(strncmp(arraydestrings[i],"nome:",5))){
             char *nome = strtok(arraydestrings[i],"nome");
@@ -65,7 +60,7 @@ char ** atribuidorDeInstrucoes(char *nomeFich, processo * processoAtual){ // DEV
             i++;
             continue;  
         }
-        if(!(strncmp(arraydestrings[i],"ppid:",4))){
+        if(!(strncmp(arraydestrings[i],"ppid:",5))){
             char * nppid = strtok(arraydestrings[i],"ppid:");
             processoAtual->ppid = atoi(nppid);
             i++;
