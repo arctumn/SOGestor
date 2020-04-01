@@ -49,7 +49,7 @@ char ** atribuidorDeInstrucoes(char *nomeFich, processo * processoAtual){ // DEV
     i=0;
     while(!strcmp(arraydestrings[i],"T")){
         if(!(strncmp(arraydestrings[i],"nome:",5))){
-            char *nome = strtok(arraydestrings[i],"nome");
+            char *nome = strtok(arraydestrings[i],"nome:");
             processoAtual->nome = nome;
             i++;
             continue;  
