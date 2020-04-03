@@ -55,9 +55,9 @@ char ** atribuidorDeInstrucoes(char *nomeFich, processo *processoAtual){ // DEVO
             i++;
             continue;  
         }
-        if(!(strncmp(arraydestrings[i],"processValue:",strlen(processValue)))){
+        if(!(strncmp(arraydestrings[i],"processValue:",strlen("processValue:")))){
             char *processValue = strtok(arraydestrings[i],"processValue:");
-            processoAtual->pid = atoi(processValue);
+            processoAtual->processValue = atoi(processValue);
             i++;
             structChecker++;
             continue;  
@@ -126,18 +126,18 @@ char ** atribuidorDeInstrucoes(char *nomeFich, processo *processoAtual){ // DEVO
             continue; 
         }
         printf("Programa Invalido\n");//
-        free(arraydeStrings);
+        free(arraydestrings);
         free(arrayFinalStrings);
         free(processoAtual);
         return NULL;
     }
     if (structChecker != 7){
         printf("Programa Invalido\n");
-        free(arraydeStrings);
+        free(arraydestrings);
         free(arrayFinalStrings);
         free(processoAtual);
         return NULL;
     }
-    free(arraydeStrings);
+    free(arraydestrings);
     return arrayFinalStrings;
 }
