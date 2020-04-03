@@ -26,17 +26,17 @@ typedef struct processo{
     int prioridade; //prioridade de execucao 1 > 2 > 3
     int tempoVida;  // tempo que tem de ser executado
     int PC;         // numero de instruções
-    int variavel;   //valor do processo
+    int processValue;   //valor do processo
 } processo;
 
-char ** atribuidorDeInstrucoes(char * nomeFich, processo * processoAtual);
+char ** atribuidorDeInstrucoes(char *nomeFich, processo *processoAtual);
 
-char ** atribuidorDeInstrucoes(char *nomeFich, processo * processoAtual){ // DEVOLVER OQUE?
+char ** atribuidorDeInstrucoes(char *nomeFich, processo *processoAtual){ // DEVOLVER OQUE?
     FILE *fp1 = fopen(nomeFich,"r");
-    processo * atual = NULL;
     char string[20];
     char *arraydestrings[90];
-    int i = 0;
+    char *arrayFinalStrings[80];
+    int i = 0,c = 0,structChecker = 0;
     if (fp1 == NULL){
         perror("NAO EXISTE O FICHEIRO\n");
         return NULL;
@@ -51,62 +51,93 @@ char ** atribuidorDeInstrucoes(char *nomeFich, processo * processoAtual){ // DEV
         if(!(strncmp(arraydestrings[i],"nome:",5))){
             char *nome = strtok(arraydestrings[i],"nome:");
             processoAtual->nome = nome;
+            structChecker++;
             i++;
+            continue;  
+        }
+        if(!(strncmp(arraydestrings[i],"processValue:",strlen(processValue)))){
+            char *processValue = strtok(arraydestrings[i],"processValue:");
+            processoAtual->pid = atoi(processValue);
+            i++;
+            structChecker++;
             continue;  
         }
         if(!(strncmp(arraydestrings[i],"pid:",4))){
-            char * npid = strtok(arraydestrings[i],"pid:");
+            char *npid = strtok(arraydestrings[i],"pid:");
             processoAtual->pid = atoi(npid);
             i++;
+            structChecker++;
             continue;  
         }
         if(!(strncmp(arraydestrings[i],"ppid:",5))){
-            char * nppid = strtok(arraydestrings[i],"ppid:");
+            char *nppid = strtok(arraydestrings[i],"ppid:");
             processoAtual->ppid = atoi(nppid);
             i++;
+            structChecker++;
             continue;  
         }
         if(!(strncmp(arraydestrings[i],"prioridade:",strlen("prioridade:")))){
-            char * prioridade = strtok(arraydestrings[i],"prioridade:");
+            char *prioridade = strtok(arraydestrings[i],"prioridade:");
             processoAtual->prioridade = atoi(prioridade);
             i++;
+            structChecker++;
             continue;  
         }
        if(!(strncmp(arraydestrings[i],"tempoVida:",strlen("tempoVida:")))){
-            char * tVida = strtok(arraydestrings[i],"tempoVida:");
-            processoAtual->tempoVida= atoi(tVida);
+            char *tVida = strtok(arraydestrings[i],"tempoVida:");
+            processoAtual->tempoVida = atoi(tVida);
             i++;
+            structChecker++;
             continue;  
         } 
         if(!(strncmp(arraydestrings[i],"PC:",strlen("PC:")))){
-            char * PC = strtok(arraydestrings[i],"PC:");
+            char *PC = strtok(arraydestrings[i],"PC:");
             processoAtual->PC = atoi(PC);
             i++;
+            structChecker++;
             continue;  
         }
-        if(!(strncmp(arraydestrings[i],"M:",strlen("M:")))){
-            char * M = strtok(arraydestrings[i],"M:");
-            
+        if(!(strncmp(arraydestrings[i],"I:",strlen("I:")))){
+            char *M = strtok(arraydestrings[i],"I:");
+            arrayFinalStrings[c] = M;
             i++;
+            c++;
             continue;  
         }
-        if(!(strncmp(arraydestrings[i],"C:",strlen("C:")))){
-            char * C = strtok(arraydestrings[i],"C:");
-            
+        if(!(strncmp(arraydestrings[i],"I:",strlen("I:")))){
+            char *C = strtok(arraydestrings[i],"I:");
+            arrayFinalStrings[c] = C;
             i++;
+            c++;
             continue;  
         }
-        if(!(strncmp(arraydestrings[i],"A:",strlen("A:")))){
-            char * A = strtok(arraydestrings[i],"A:");
-            
+        if(!(strncmp(arraydestrings[i],"I:",strlen("I:")))){
+            char *A = strtok(arraydestrings[i],"I:");
+            arrayFinalStrings[c] = A;
             i++;
+            c++;
             continue;  
         }
-        if(!(strncmp(arraydestrings[i],"S:",strlen("S:")))){
-            char * S = strtok(arraydestrings[i],"S:");
-            
+        if(!(strncmp(arraydestrings[i],"I:",strlen("I:")))){
+            char *S = strtok(arraydestrings[i],"I:");
+            arrayFinalStrings[c] = S;
             i++;
-            continue;  
+            c++;
+            continue; 
         }
+        printf("Programa Invalido\n");//
+        free(arraydeStrings);
+        free(arrayFinalStrings);
+        free(processoAtual);
+        return NULL;
     }
+    if (structChecker != 7){
+        printf("Programa Invalido\n");
+        free(arraydeStrings);
+        free(arrayFinalStrings);
+        free(processoAtual);
+        return NULL;
+    }
+    free(arraydeStrings);
+    return arrayFinalStrings;
 }
