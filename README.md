@@ -1,6 +1,6 @@
 # SOGestor
 
-# Hiperligaçoes
+## Hiperligaçoes
 
 [valgrind](http://valgrind.org/) -> Otimo verificador de erros de memoria para usar valgrind ./(nome do executavel)
 
@@ -42,13 +42,13 @@ if(!(strncmp(arraydestrings[i],"I:",strlen("I:")))){
         }
 ```
 
-# Tasks concluidos
+## Tasks concluidos
 
 - [x] -> parser feito com teste
 - [ ] -> adicionar outros
 
 
-# Explicações de markdown by arctumn
+## Explicações de markdown by arctumn
 
  ```  
  DEIXAR DOIS OU MAIS ESPAÇOS EM MARKDOWN SIGNIFICA PARAGRAFO
