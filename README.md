@@ -1,6 +1,6 @@
 # SOGestor
 
-#Hiperligaçoes
+# Hiperligaçoes
 
 [valgrind](http://valgrind.org/) -> Otimo verificador de erros de memoria para usar valgrind ./(nome do executavel)
 
@@ -8,7 +8,7 @@
 
 [Memes](https://www.reddit.com/r/memes/) -> DONT LET YOUR MEMES BE DREAMS
 
-##bugFixes
+## bugFixes
 
 Teste feito um dos bugs devia ao = estar a passar apenas o endereço levando a que mostras-se mas nao salvava o contuodo, a solução que arrangei envolve usar o strdup que permite copiar o contuedo.(1)
 
@@ -42,19 +42,19 @@ if(!(strncmp(arraydestrings[i],"I:",strlen("I:")))){
         }
 ```
 
-#Tasks concluidos
+# Tasks concluidos
 
 - [x] -> parser feito com teste
 - [ ] -> adicionar outros
 
 
-#Explicações de markdown by arctumn
+# Explicações de markdown by arctumn
 
  ```  
  DEIXAR DOIS OU MAIS ESPAÇOS EM MARKDOWN SIGNIFICA PARAGRAFO
  [x] -> concluido 
  [ ] -> por concluir
- #   -> representa um titulo, ## um sub titulo .... n# n subtitulo
+ #   -> representa um titulo, ## um sub titulo .... n# n subtitulo Deixar um espaço apos o #
  [.....](aaaa.aaa) -> É o template para a hiperligaçao aaaa.aaa
 EXEMPLO DE UMA HIPERLIGAÇAO
 [Jar com a Classe Ler](https://github.com/arctumn/POOProject/blob/master/myinputs.jar) -> Jar com o Ler 1º Semestre para interessados
