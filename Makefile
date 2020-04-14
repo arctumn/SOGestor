@@ -4,9 +4,9 @@ LIBS=-lm
 OBS=main.o #porefinir
 
 #Alvo por defeito é o primeiro
-all :  gestor
+all :gestor
 
-main.o :fundef.h gestor.h main.c
+main.o :gestor.h main.c
 	$(CC) $(FLAGS) main.c
 
 clean limpar:

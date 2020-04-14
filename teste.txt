@@ -1,0 +1,12 @@
+nome:nome
+pid:666
+ppid:69
+prioridade:1
+tempoVida:15
+PC:40
+processValue:15
+I:M 100
+I:C 2
+I:A 19
+I:S 5 
+T
