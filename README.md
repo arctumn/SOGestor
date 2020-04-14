@@ -1,5 +1,14 @@
 # SOGestor
 
+#Hiperligaçoes
+
+[valgrind](http://valgrind.org/) -> Otimo verificador de erros de memoria para usar valgrind ./(nome do executavel)
+
+[Aprender a usar o git](https://rogerdudler.github.io/git-guide/) -> Otimo guia para aprenderem a usar git
+
+[Memes](https://www.reddit.com/r/memes/) -> DONT LET YOUR MEMES BE DREAMS
+
+##bugFixes
 
 Teste feito um dos bugs devia ao = estar a passar apenas o endereço levando a que mostras-se mas nao salvava o contuodo, a solução que arrangei envolve usar o strdup que permite copiar o contuedo.(1)
 
@@ -42,6 +51,7 @@ if(!(strncmp(arraydestrings[i],"I:",strlen("I:")))){
 #Explicações de markdown by arctumn
 
  ```  
+ DEIXAR DOIS OU MAIS ESPAÇOS EM MARKDOWN SIGNIFICA PARAGRAFO
  [x] -> concluido 
  [ ] -> por concluir
  #   -> representa um titulo, ## um sub titulo .... n# n subtitulo
