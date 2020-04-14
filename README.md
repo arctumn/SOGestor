@@ -1,1 +1,52 @@
 # SOGestor
+
+
+Teste feito um dos bugs devia ao = estar a passar apenas o endereço levando a que mostras-se mas nao salvava o contuodo, a solução que arrangei envolve usar o strdup que permite copiar o contuedo.(1)
+
+
+```
+(1)
+// versao correta
+ while(fgets(string,sizeof(string),fp1) != 0){
+        arraydestrings[i] = strndup(string,sizeof(string)); // fix copia o conteudo em vez do endereço
+        printf("%s",arraydestrings[i]);
+        i++;
+    }
+ //versao faulty abaixo
+  while(fgets(string,sizeof(string),fp1) != 0){
+        arraydestrings[i] = string; // aparenta estar correto a primeira vista mas fora do while apenas ira mostrar o ultimo conteudo
+        printf("%s",arraydestrings[i]);
+        i++;
+    }
+```
+
+
+Deparei-me tambem que a forma que estavamos a criar o array de instruções era "faulty", ou seja copiava vezes a mais, isto acontecia pq tinhamos varios ifs para o mesmo conteudo.(2)
+
+```
+(2)
+// Ter mais que um destes apenas cria duplicados
+if(!(strncmp(arraydestrings[i],"I:",strlen("I:")))){
+            char *I = strtok(arraydestrings[i],"I:");
+            arrayFinalStrings[c] = I;
+            c++;
+        }
+```
+
+#Tasks concluidos
+
+- [x] -> parser feito com teste
+- [ ] -> adicionar outros
+
+
+#Explicações de markdown by arctumn
+
+ ```  
+ [x] -> concluido 
+ [ ] -> por concluir
+ #   -> representa um titulo, ## um sub titulo .... n# n subtitulo
+ [.....](aaaa.aaa) -> É o template para a hiperligaçao aaaa.aaa
+EXEMPLO DE UMA HIPERLIGAÇAO
+[Jar com a Classe Ler](https://github.com/arctumn/POOProject/blob/master/myinputs.jar) -> Jar com o Ler 1º Semestre para interessados
+ Existem mais mas não acho que sejam precisos
+ ```
