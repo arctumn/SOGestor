@@ -1,3 +1,11 @@
+#include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <time.h>
+#include <fcntl.h>
+#include <string.h>
+#include <stdio.h>
 typedef struct processo{
     char *nome;     // nome do processo
     int pid;        //identificador de processo gestor pid = 0
@@ -30,7 +38,7 @@ void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *p
     }
     fclose(fp1);
     i=0;
-    printf("\n--------------------\n");
+    printf("\n----------INICIO DO PARSING DO FICHEIRO---------\n");
     while(arraydestrings[i] != NULL){
         printf("%s",arraydestrings[i]);
         if(!(strncmp(arraydestrings[i],"nome:",5))){
