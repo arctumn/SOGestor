@@ -6,35 +6,43 @@
 #include <fcntl.h>
 #include <string.h>
 #include <stdio.h>
-//              nome:nome
-//              pid:666
-//              ppid:69
-//              prioridade:1
-//              tempoVida:15
-//              PC:4
-//              fim
-//              M 100
-//              C 2    duas instruçoes pos fork
-//              A 19
-//              S 5 
-//              T
+
+// STRUCT PROCESSO
+//nome -> nome do processo
+//pid -> identificador de processo gestor pid = 0
+//ppid -> pai da pid, se este for filho
+//prioridade -> prioridade de execucao 1 > 2 > 3
+//tempoVida -> tempo que tem de ser executado
+//PC -> numero de instruções
+//processValue -> valor do processo
 typedef struct processo{
-    char *nome;     // nome do processo
-    int pid;        //identificador de processo gestor pid = 0
-    int ppid;       //pai da pid, se este for filho
-    int prioridade; //prioridade de execucao 1 > 2 > 3
-    int tempoVida;  // tempo que tem de ser executado
-    int PC;         // numero de instruções
-    int processValue;   //valor do processo
+    char *nome;     
+    int pid;        
+    int ppid;    
+    int prioridade;   
+    int tempoVida;  
+    int PC;         
+    int processValue;   
 } processo;
 
+// STRUCT PROGRAMA
+// nomeProg -> nome do programa
+// processo -> struct com informações do programa
+// listaDeInstrucoes -> lista com as operações do programa
 typedef struct programa{
     char *nomeProg;
     processo infoProcesso;
     char ** listaDeIntrucoes;
 }programa;
 
+//Pega num ficheiro e da parse dele separando em instruçoes e na estrutura que o define
 void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *processoAtual);
+
+//Unifica numa estrutura as intruções de um programa e a informações sobre o programa
 programa *juntor(processo info,char ** listaDeIntrucoesInfo);
+
+//Precorre as instruções de um programa
 void percorrerIntrucoes(int i,programa *progAPercorrer);
+
+//Cria um programa filho igual ao pai e executa apartir da posição pos
 void filho(int pos,programa *pai);
