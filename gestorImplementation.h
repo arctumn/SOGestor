@@ -16,8 +16,7 @@ typedef struct processo{
     int processValue;   //valor do processo
 } processo;
 
-typedef struct programa
-{
+typedef struct programa{
     processo infoProcesso;
     char ** listaDeIntrucoes;
 }programa;
