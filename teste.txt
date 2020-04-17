@@ -3,7 +3,7 @@ pid:666
 ppid:69
 prioridade:1
 tempoVida:15
-PC:40
+PC:4
 processValue:15
 I:M 100
 I:C 2

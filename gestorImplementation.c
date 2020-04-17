@@ -1,25 +1,4 @@
-#include <stdlib.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <time.h>
-#include <fcntl.h>
-#include <string.h>
-#include <stdio.h>
-typedef struct processo{
-    char *nome;     // nome do processo
-    int pid;        //identificador de processo gestor pid = 0
-    int ppid;       //pai da pid, se este for filho
-    int prioridade; //prioridade de execucao 1 > 2 > 3
-    int tempoVida;  // tempo que tem de ser executado
-    int PC;         // numero de instruções
-    int processValue;   //valor do processo
-} processo;
-
-typedef struct programa{
-    processo infoProcesso;
-    char ** listaDeIntrucoes;
-}programa;
+#include "gestor.h"
 
 void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *processoAtual){ // DEVOLVER OQUE?
     FILE *fp1 = fopen(nomeFich,"r");
@@ -86,4 +65,45 @@ void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *p
         printf("Programa Invalido\n");
         return;
     }
+}
+programa *juntor(processo info,char ** listaDeIntrucoesInfo){
+    programa *associado;
+    associado->nomeProg = info.nome;
+    associado->infoProcesso = info;
+    associado->listaDeIntrucoes = listaDeIntrucoesInfo;
+    return associado;
+}
+void percorrerIntrucoes(int i,programa *progAPercorrer){
+    int forkjump = 0;
+	while(progAPercorrer->listaDeIntrucoes[i] != NULL){
+		if(!(strncmp(progAPercorrer->listaDeIntrucoes[i],"M",strlen("M")))){
+            progAPercorrer->infoProcesso.processValue = atoi(strtok(progAPercorrer->listaDeIntrucoes[i],"M "));
+            i++;
+        }
+		if(!(strncmp(progAPercorrer->listaDeIntrucoes[i],"A",strlen("A")))){
+            progAPercorrer->infoProcesso.processValue += atoi(strtok(progAPercorrer->listaDeIntrucoes[i],"A "));
+            i++;
+        }
+		if(!(strncmp(progAPercorrer->listaDeIntrucoes[i],"S",strlen("S")))){
+            progAPercorrer->infoProcesso.processValue -= atoi(strtok(progAPercorrer->listaDeIntrucoes[i],"S "));
+            i++;
+        }
+		if(!(strncmp(progAPercorrer->listaDeIntrucoes[i],"L",strlen("L")))){
+            progAPercorrer->infoProcesso.nome = strtok(progAPercorrer->listaDeIntrucoes[i],"L ");
+            progAPercorrer->nomeProg = progAPercorrer->infoProcesso.nome;
+            progAPercorrer->listaDeIntrucoes = NULL;
+            if(progAPercorrer->infoProcesso.ppid != 1){
+            int aux = progAPercorrer->infoProcesso.pid;
+            atribuidorDeInstrucoes(progAPercorrer->infoProcesso.nome,progAPercorrer->listaDeIntrucoes,&progAPercorrer->infoProcesso);
+            progAPercorrer->infoProcesso.ppid = aux;
+            }
+            else  atribuidorDeInstrucoes(progAPercorrer->infoProcesso.nome,progAPercorrer->listaDeIntrucoes,&progAPercorrer->infoProcesso);
+            i++;
+        }
+        if(!(strncmp(progAPercorrer->listaDeIntrucoes[i],"C",strlen("C")))){
+            filho(i,progAPercorrer);
+            forkjump = atoi(strtok(progAPercorrer->listaDeIntrucoes[i],"C "));
+            i+forkjump;
+        }
+	}
 }
