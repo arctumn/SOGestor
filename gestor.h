@@ -20,20 +20,7 @@
 //              S 5 
 //              T
 
-typedef struct processo{
-    char *nome;     // nome do processo
-    int pid;        //identificador de processo gestor pid = 0
-    int ppid;       //pai da pid, se este for filho
-    int prioridade; //prioridade de execucao 1 > 2 > 3
-    int tempoVida;  // tempo que tem de ser executado
-    int PC;         // numero de instruções
-    int processValue;   //valor do processo
-} processo;
-
-typedef struct programa
-{
-    processo infoProcesso;
-    char ** listaDeIntrucoes;
-}programa;
+typedef struct processo;
+typedef struct programa;
 
 void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *processoAtual);
