@@ -71,39 +71,54 @@ programa *juntor(processo info,char ** listaDeIntrucoesInfo){
     associado->nomeProg = info.nome;
     associado->infoProcesso = info;
     associado->listaDeIntrucoes = listaDeIntrucoesInfo;
+    associado->estado = 0;
     return associado;
 }
-void percorrerIntrucoes(int i,programa *progAPercorrer){
+void percorrerIntrucoes(programa *progAPercorrer){
     int forkjump = 0;
-	while(progAPercorrer->listaDeIntrucoes[i] != NULL){
-		if(!(strncmp(progAPercorrer->listaDeIntrucoes[i],"M",strlen("M")))){
-            progAPercorrer->infoProcesso.processValue = atoi(strtok(progAPercorrer->listaDeIntrucoes[i],"M "));
-            i++;
+	while(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC] != NULL){
+		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"M",strlen("M")))){
+            progAPercorrer->infoProcesso.processValue = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"M "));
+            progAPercorrer->infoProcesso.PC++;
         }
-		if(!(strncmp(progAPercorrer->listaDeIntrucoes[i],"A",strlen("A")))){
-            progAPercorrer->infoProcesso.processValue += atoi(strtok(progAPercorrer->listaDeIntrucoes[i],"A "));
-            i++;
+		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"A",strlen("A")))){
+            progAPercorrer->infoProcesso.processValue += atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"A "));
+            progAPercorrer->infoProcesso.PC++;
         }
-		if(!(strncmp(progAPercorrer->listaDeIntrucoes[i],"S",strlen("S")))){
-            progAPercorrer->infoProcesso.processValue -= atoi(strtok(progAPercorrer->listaDeIntrucoes[i],"S "));
-            i++;
+		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"S",strlen("S")))){
+            progAPercorrer->infoProcesso.processValue -= atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"S "));
+            progAPercorrer->infoProcesso.PC++;
         }
-		if(!(strncmp(progAPercorrer->listaDeIntrucoes[i],"L",strlen("L")))){
-            progAPercorrer->infoProcesso.nome = strtok(progAPercorrer->listaDeIntrucoes[i],"L ");
+            //EXECV()
+		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L",strlen("L")))){
+            progAPercorrer->infoProcesso.nome = strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L ");
             progAPercorrer->nomeProg = progAPercorrer->infoProcesso.nome;
             progAPercorrer->listaDeIntrucoes = NULL;
-            if(progAPercorrer->infoProcesso.ppid != 1){
+            //CASO SEJA UM PROCESSO FILHO
+            if(progAPercorrer->infoProcesso.ppid != 1){ 
             int aux = progAPercorrer->infoProcesso.pid;
             atribuidorDeInstrucoes(progAPercorrer->infoProcesso.nome,progAPercorrer->listaDeIntrucoes,&progAPercorrer->infoProcesso);
             progAPercorrer->infoProcesso.ppid = aux;
             }
+            //NÂO SEJA FILHO
             else  atribuidorDeInstrucoes(progAPercorrer->infoProcesso.nome,progAPercorrer->listaDeIntrucoes,&progAPercorrer->infoProcesso);
-            i++;
+            progAPercorrer->infoProcesso.PC++;
         }
-        if(!(strncmp(progAPercorrer->listaDeIntrucoes[i],"C",strlen("C")))){
-            filho(i,progAPercorrer);
-            forkjump = atoi(strtok(progAPercorrer->listaDeIntrucoes[i],"C "));
-            i+forkjump;
+            //FORK()
+        if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C",strlen("C")))){
+            filho(progAPercorrer);
+            forkjump = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C "));
+            progAPercorrer->infoProcesso.PC+forkjump;
+        }   //WAITING()
+        if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"B",strlen("B")))){
+            progAPercorrer->estado = 1; //PARADO
+            progAPercorrer->infoProcesso.PC++;
+            return;
         }
 	}
+    progAPercorrer->estado = 2; //MORTO
+}
+void filho(programa *pai){
+    programa *filho = pai;
+    percorrerIntrucoes(filho);
 }
