@@ -49,4 +49,4 @@ programa juntor(processo info,char ** listaDeIntrucoesInfo);
 void percorrerIntrucoes(programa *progAPercorrer);
 
 //Cria um programa filho igual ao pai
-void filho(programa *pai);
+void filho(programa pai);

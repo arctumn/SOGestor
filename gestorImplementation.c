@@ -117,7 +117,7 @@ void percorrerIntrucoes(programa *progAPercorrer){
             forkjump = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C "));
             int forkFlag = 1;
             printf("valor do jump:%d valor do Counter:%d\n",forkjump,progAPercorrer->infoProcesso.PC);
-            filho(progAPercorrer);
+            filho(*progAPercorrer);
             progAPercorrer->infoProcesso.PC+=forkjump;
         }   //WAITING()
         if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"B",strlen("B")))){
@@ -134,9 +134,8 @@ void percorrerIntrucoes(programa *progAPercorrer){
 	}
     progAPercorrer->estado = 2; //MORTO
 }
-void filho(programa *pai){
-    programa *filho = pai;
-    filho->infoProcesso.PC++;
-    printf("PC do FILHO:%d\n",filho->infoProcesso.PC);
-    percorrerIntrucoes(filho);
+void filho(programa pai){
+    pai.infoProcesso.PC++;
+    printf("PC do FILHO:%d\n",pai.infoProcesso.PC);
+    percorrerIntrucoes(&pai);
 }
