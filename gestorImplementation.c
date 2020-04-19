@@ -126,7 +126,6 @@ void percorrerIntrucoes(programa *progAPercorrer){
             return;
         }
 	}
-    printf("Percorri tudo\n");
     progAPercorrer->estado = 2; //MORTO
 }
 void filho(programa *pai){
