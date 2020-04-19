@@ -43,7 +43,7 @@ typedef struct programa{
 void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *processoAtual);
 
 //Unifica numa estrutura as intruções de um programa e a informações sobre o programa
-programa *juntor(processo info,char ** listaDeIntrucoesInfo);
+programa juntor(processo info,char ** listaDeIntrucoesInfo);
 
 //Precorre as instruções de um programa
 void percorrerIntrucoes(programa *progAPercorrer);

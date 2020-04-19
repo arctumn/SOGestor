@@ -7,5 +7,7 @@ PC:0
 processValue:15
 I:M 100
 I:A 19
-I:S 5 
+I:C 2
+I:L A
+I:S 5
 T
