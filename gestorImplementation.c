@@ -3,7 +3,7 @@
 void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *processoAtual){ // DEVOLVER OQUE?
     FILE *fp1 = fopen(nomeFich,"r");
     char *arraydestrings[90];
-    char string[20];
+    char string[80];
     int t = 0;
     int i = 0,c = 0,structChecker = 0;
     if (fp1 == NULL){
@@ -18,9 +18,8 @@ void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *p
     fclose(fp1);
     i=0;
     while(i < t){
-        if(!(strncmp(arraydestrings[i],"nome:",5))){
-            char *nome = strtok(arraydestrings[i],":");
-            processoAtual->nome = nome;
+        if(!(strncmp(arraydestrings[i],"nome ",strlen("nome ")))){
+            processoAtual->nome = strtok(arraydestrings[i],"nome ");
             structChecker++; 
         }
         if(!(strncmp(arraydestrings[i],"processValue:",strlen("processValue:")))){
@@ -136,7 +135,6 @@ void percorrerIntrucoes(programa *progAPercorrer){
 }
 void filho(programa pai){
     pai.infoProcesso.PC++;
-    printf("PC do FILHO:%d\n",pai.infoProcesso.PC);
     percorrerIntrucoes(&pai);
 }
 
@@ -153,5 +151,5 @@ void programaRunner(char *nomeDoPrograma){
     printf("Execução do processo ->\n");
     percorrerIntrucoes(&AB);
     free(leitura);
-    printf("Counter: %d \n Fim do programa:%s\n",AB.infoProcesso.PC,AB.infoProcesso.nome);
+    printf("Counter: %d \n Fim do programa:%s\n",AB.infoProcesso.PC,AB.nomeProg);
 }
