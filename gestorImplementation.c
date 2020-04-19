@@ -139,3 +139,19 @@ void filho(programa pai){
     printf("PC do FILHO:%d\n",pai.infoProcesso.PC);
     percorrerIntrucoes(&pai);
 }
+
+void programaRunner(char *nomeDoPrograma){
+    char ** leitura =(char **)malloc(80*sizeof(char *));
+    int i = 0;
+    processo A;
+    programa AB;
+    atribuidorDeInstrucoes(nomeDoPrograma,leitura,&A);
+    AB = juntor(A,leitura);
+    printf("\n");
+    printf("Info do processo ->\n");
+    printf(" nome:%s\n pid:%d\n ppid:%d\n prioridade:%d\n tempo de vida:%d\n PC:%d\n processValue:%d\n Quantidade de intruçoes:%d\n",A.nome,A.pid,A.ppid,A.prioridade,A.tempoVida,A.PC,A.processValue,A.quantidadeDeIntrucoes);
+    printf("Execução do processo ->\n");
+    percorrerIntrucoes(&AB);
+    free(leitura);
+    printf("Counter: %d \n Fim do programa:%s\n",AB.infoProcesso.PC,AB.infoProcesso.nome);
+}

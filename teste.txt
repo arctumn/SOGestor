@@ -1,6 +1,6 @@
-nome:nome
-pid:666
-ppid:69
+nome:ProgramaTeste
+pid:2
+ppid:1
 prioridade:1
 tempoVida:15
 PC:0
