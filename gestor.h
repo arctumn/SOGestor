@@ -15,6 +15,7 @@
 //tempoVida -> tempo que tem de ser executado
 //PC -> numero de instruções
 //processValue -> valor do processo
+//quantidadeDeIntrucoes -> numero de Intruções do progama
 typedef struct processo{
     char *nome;     
     int pid;        
@@ -23,16 +24,19 @@ typedef struct processo{
     int tempoVida;  
     int PC;         
     int processValue;   
+    int quantidadeDeIntrucoes;
 } processo;
 
 // STRUCT PROGRAMA
 // nomeProg -> nome do programa
 // processo -> struct com informações do programa
 // listaDeInstrucoes -> lista com as operações do programa
+// estado -> RUNNING 0 / PARADO 1 / MORTO 2
 typedef struct programa{
     char *nomeProg;
     processo infoProcesso;
     char ** listaDeIntrucoes;
+    int estado;
 }programa;
 
 //Pega num ficheiro e da parse dele separando em instruçoes e na estrutura que o define
@@ -42,7 +46,7 @@ void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *p
 programa *juntor(processo info,char ** listaDeIntrucoesInfo);
 
 //Precorre as instruções de um programa
-void percorrerIntrucoes(int i,programa *progAPercorrer);
+void percorrerIntrucoes(programa *progAPercorrer);
 
-//Cria um programa filho igual ao pai e executa apartir da posição pos
-void filho(int pos,programa *pai);
+//Cria um programa filho igual ao pai
+void filho(programa *pai);
