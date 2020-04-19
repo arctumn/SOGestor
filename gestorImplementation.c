@@ -15,13 +15,11 @@ void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *p
         i++;
     }
     t = i;
+    processoAtual->nome = arraydestrings[0];
     fclose(fp1);
-    i=0;
+    i=1;
     while(i < t){
-        if(!(strncmp(arraydestrings[i],"nome ",strlen("nome ")))){
-            processoAtual->nome = strtok(arraydestrings[i],"nome ");
-            structChecker++; 
-        }
+        
         if(!(strncmp(arraydestrings[i],"processValue:",strlen("processValue:")))){
             char *processValue = strtok(arraydestrings[i],"processValue:");
             processoAtual->processValue = atoi(processValue);
@@ -60,7 +58,7 @@ void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *p
         i++;
     }
     processoAtual->quantidadeDeIntrucoes = c;
-    if (structChecker != 7){
+    if (structChecker != 6){
         printf("Programa Invalido\n");
         return;
     }
@@ -78,29 +76,27 @@ void percorrerIntrucoes(programa *progAPercorrer){
     int forkFlag = 0;
 	while(progAPercorrer->infoProcesso.PC < progAPercorrer->infoProcesso.quantidadeDeIntrucoes){
 		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"M",strlen("M")))){
-            printf("Entrei numa instruçao M \n");
+            printf(" Entrei numa instruçao M \n");
             progAPercorrer->infoProcesso.processValue = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"M "));
-            printf("Valor do processo: %d\n",progAPercorrer->infoProcesso.processValue); 
+            printf(" Valor do processo: %d\n",progAPercorrer->infoProcesso.processValue); 
         }
 		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"A",strlen("A")))){
-            printf("Entrei numa instruçao A \n");
+            printf(" Entrei numa instruçao A \n");
             progAPercorrer->infoProcesso.processValue += atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"A "));
-            printf("Valor do processo: %d\n",progAPercorrer->infoProcesso.processValue);
+            printf(" Valor do processo: %d\n",progAPercorrer->infoProcesso.processValue);
         }
 		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"S",strlen("S")))){
-            printf("Entrei numa instruçao S \n");
+            printf(" Entrei numa instruçao S \n");
             progAPercorrer->infoProcesso.processValue -= atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"S "));
-            printf("Valor do processo: %d\n",progAPercorrer->infoProcesso.processValue);
+            printf(" Valor do processo: %d\n",progAPercorrer->infoProcesso.processValue);
         }
             //EXECV()
 		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L",strlen("L")))){
-            printf("Entrei numa instruçao L \n");
+            printf(" Entrei numa instruçao L \n");
             char *nome = strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L ");
-            printf("%ld\n",strlen(nome));
             nome[strlen(nome)-2] = '\0';
             progAPercorrer->infoProcesso.nome = nome;
             progAPercorrer->nomeProg = progAPercorrer->infoProcesso.nome;
-            printf("nome novo:%s\n",nome);
             //CASO SEJA UM PROCESSO FILHO
             if(progAPercorrer->infoProcesso.ppid != 1){ 
             int aux = progAPercorrer->infoProcesso.pid;
@@ -112,15 +108,15 @@ void percorrerIntrucoes(programa *progAPercorrer){
         }
             //FORK()
         if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C",strlen("C")))){
-            printf("Entrei numa instruçao C \n");
+            printf(" Entrei numa instruçao C \n");
             forkjump = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C "));
             int forkFlag = 1;
-            printf("valor do jump:%d valor do Counter:%d\n",forkjump,progAPercorrer->infoProcesso.PC);
             filho(*progAPercorrer);
+            printf(" Fim do processo filho\n");
             progAPercorrer->infoProcesso.PC+=forkjump;
         }   //WAITING()
         if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"B",strlen("B")))){
-            printf("Entrei numa instruçao B \n");
+            printf(" Entrei numa instruçao B \n");
             progAPercorrer->estado = 1; //PARADO
             progAPercorrer->infoProcesso.PC++;
             return;
@@ -129,7 +125,7 @@ void percorrerIntrucoes(programa *progAPercorrer){
             forkFlag = 0;
         }
         else progAPercorrer->infoProcesso.PC++;
-        printf("PC:%d\n",progAPercorrer->infoProcesso.PC);
+        printf(" PC:%d\n",progAPercorrer->infoProcesso.PC);
 	}
     progAPercorrer->estado = 2; //MORTO
 }
@@ -147,9 +143,9 @@ void programaRunner(char *nomeDoPrograma){
     AB = juntor(A,leitura);
     printf("\n");
     printf("Info do processo ->\n");
-    printf(" nome:%s\n pid:%d\n ppid:%d\n prioridade:%d\n tempo de vida:%d\n PC:%d\n processValue:%d\n Quantidade de intruçoes:%d\n",A.nome,A.pid,A.ppid,A.prioridade,A.tempoVida,A.PC,A.processValue,A.quantidadeDeIntrucoes);
+    printf(" nome:%s pid:%d\n ppid:%d\n prioridade:%d\n tempo de vida:%d\n PC:%d\n processValue:%d\n Quantidade de intruçoes:%d\n",A.nome,A.pid,A.ppid,A.prioridade,A.tempoVida,A.PC,A.processValue,A.quantidadeDeIntrucoes);
     printf("Execução do processo ->\n");
     percorrerIntrucoes(&AB);
     free(leitura);
-    printf("Counter: %d \n Fim do programa:%s\n",AB.infoProcesso.PC,AB.nomeProg);
+    printf(" Counter: %d \nFim do programa:%s\n",AB.infoProcesso.PC,AB.nomeProg);
 }
