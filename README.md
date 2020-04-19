@@ -45,6 +45,8 @@ if(!(strncmp(arraydestrings[i],"I:",strlen("I:")))){
 ## Tasks concluidos
 
 - [x] -> parser feito com teste
+- [x] -> Executor de instruções
+- [x] -> Executor de programas
 - [ ] -> adicionar outros
 
 
