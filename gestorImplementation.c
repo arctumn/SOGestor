@@ -133,7 +133,7 @@ void filho(programa pai){
     printf(" Entrei no processo filho!\n");
     pai.infoProcesso.PC++;
     percorrerIntrucoes(&pai);
-    printf(" Fim do processo filho\n");
+    printf(" Fim do processo filho!\n");
 }
 
 void programaRunner(char *nomeDoPrograma){ // FIFO
