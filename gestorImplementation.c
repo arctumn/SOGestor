@@ -112,8 +112,8 @@ void percorrerIntrucoes(programa *progAPercorrer){
             forkjump = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C "));
             int forkFlag = 1;
             filho(*progAPercorrer);
-            printf(" Fim do processo filho\n");
-            progAPercorrer->infoProcesso.PC+=forkjump;
+            progAPercorrer->infoProcesso.PC = progAPercorrer->infoProcesso.PC + forkjump-1;
+            printf("VALOR DO PC:%d\n",progAPercorrer->infoProcesso.PC);
         }   //WAITING()
         if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"B",strlen("B")))){
             printf(" Entrei numa instruçao B \n");
@@ -130,11 +130,13 @@ void percorrerIntrucoes(programa *progAPercorrer){
     progAPercorrer->estado = 2; //MORTO
 }
 void filho(programa pai){
+    printf(" Entrei no processo filho!\n");
     pai.infoProcesso.PC++;
     percorrerIntrucoes(&pai);
+    printf(" Fim do processo filho\n");
 }
 
-void programaRunner(char *nomeDoPrograma){
+void programaRunner(char *nomeDoPrograma){ // FIFO
     char ** leitura =(char **)malloc(80*sizeof(char *));
     int i = 0;
     processo A;

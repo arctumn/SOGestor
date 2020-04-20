@@ -51,5 +51,5 @@ void percorrerIntrucoes(programa *progAPercorrer);
 //Cria um programa filho igual ao pai
 void filho(programa pai);
 
-//Precorre todo o programa Serve para o FIFO e talvez para o SJF
+//Precorre todo o programa Serve para o FIFO
 void programaRunner(char *nomeDoPrograma);
