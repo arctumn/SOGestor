@@ -110,7 +110,7 @@ void percorrerIntrucoes(programa *progAPercorrer){
         if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C",strlen("C")))){
             printf(" Entrei numa instruçao C \n");
             forkjump = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C "));
-            int forkFlag = 1;
+            forkFlag = 1;
             filho(*progAPercorrer);
             progAPercorrer->infoProcesso.PC = progAPercorrer->infoProcesso.PC + forkjump-1;
             printf("VALOR DO PC:%d\n",progAPercorrer->infoProcesso.PC);
@@ -138,7 +138,6 @@ void filho(programa pai){
 
 void programaRunner(char *nomeDoPrograma){ // FIFO
     char ** leitura =(char **)malloc(80*sizeof(char *));
-    int i = 0;
     processo A;
     programa AB;
     atribuidorDeInstrucoes(nomeDoPrograma,leitura,&A);
