@@ -112,7 +112,7 @@ void percorrerIntrucoes(programa *progAPercorrer){
             forkjump = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C "));
             forkFlag = 1;
             filho(*progAPercorrer);
-            progAPercorrer->infoProcesso.PC = progAPercorrer->infoProcesso.PC + forkjump-1;
+            progAPercorrer->infoProcesso.PC = progAPercorrer->infoProcesso.PC + forkjump;
             printf("VALOR DO PC:%d\n",progAPercorrer->infoProcesso.PC);
         }   //WAITING()
         if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"B",strlen("B")))){
