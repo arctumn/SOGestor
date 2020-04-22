@@ -8,6 +8,14 @@
 
 [Memes](https://www.reddit.com/r/memes/) -> DONT LET YOUR MEMES BE DREAMS
 
+## Makefile
+
+Regras para usar o Makefile:
+```
+make // compila tudo
+make clean // limpa tudo
+make cleanEx // limpa objetos este ta incorporado no make para remover os ficheiros .o criados pelo make
+```
 ## bugFixes
 
 Teste feito um dos bugs devia ao = estar a passar apenas o endereço levando a que mostras-se mas nao salvava o contuodo, a solução que arrangei envolve usar o strdup que permite copiar o contuedo.(1)
@@ -47,6 +55,7 @@ if(!(strncmp(arraydestrings[i],"I:",strlen("I:")))){
 - [x] -> parser feito com teste
 - [x] -> Executor de instruções
 - [x] -> Executor de programas
+- [x] -> Makefile
 - [ ] -> adicionar outros
 
 
