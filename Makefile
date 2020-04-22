@@ -10,6 +10,7 @@ all : gestor
 gestor: main.o gestorImplementation.o
 	$(CC) $(FLAGSO)  main.o gestorImplementation.o 
 	make cleanEx
+#comentar o make cleanEx se quiserem os objetos
 
 main.o : gestor.h main.c
 	$(CC) $(FLAGS) main.c
