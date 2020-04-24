@@ -1,7 +1,7 @@
 #include "gestor.h"
 
 int main(){
-    /* somehow esta com problemas a ler a lista...need fixing
+    // somehow esta com problemas a ler a lista...need fixing
     int option;
     printf("Escolha um metodo para percorrer os programas\n");
     printf("1 -> Metodo FIFO\n");
@@ -18,6 +18,5 @@ int main(){
         exit(0);
         break;
     }
-    */
-   programaRunnerFifo("teste.txt");
+   //programaRunnerFifo("teste.txt");
 }

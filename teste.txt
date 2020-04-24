@@ -6,10 +6,8 @@ tempoVida:15
 PC:0
 processValue:15
 I:M 100
+I:C 2
+I:L filho1.txt
 I:A 19
-I:C 2
-I:L filho1
-I:C 2
-I:L filho1
 I:S 5
 T

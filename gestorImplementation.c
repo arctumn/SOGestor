@@ -71,9 +71,14 @@ programa juntor(processo info,char ** listaDeIntrucoesInfo){
     associado.estado = 0;
     return associado;
 }
+
+//Corrige o problema gerado pela strings do primeiro programa
+int globalhf = 1;
+
 void percorrerIntrucoes(programa *progAPercorrer){
     int forkjump = 0;
     int forkFlag = 0;
+    int pos = 0;
 	while(progAPercorrer->infoProcesso.PC < progAPercorrer->infoProcesso.quantidadeDeIntrucoes){
 		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"M",strlen("M")))){
             printf(" Entrei numa instruçao M \n");
@@ -94,7 +99,13 @@ void percorrerIntrucoes(programa *progAPercorrer){
 		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L",strlen("L")))){
             printf(" Entrei numa instruçao L \n");
             char *nome = strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L ");
-            nome[strlen(nome)-2] = '\0';
+            strfind(nome,'\n',&pos);
+            if(globalhf){
+            nome[pos-1] = '\0';
+            globalhf = 0;
+            }
+            else nome[pos] = '\0';    
+            printf(" Novo nome:%s",nome);
             progAPercorrer->infoProcesso.nome = nome;
             progAPercorrer->nomeProg = progAPercorrer->infoProcesso.nome;
             //CASO SEJA UM PROCESSO FILHO
@@ -150,31 +161,47 @@ void programaRunnerFifo(char *nomeDoPrograma){ // FIFO
     free(leitura);
     printf(" Counter: %d \nFim do programa:%s\n",AB.infoProcesso.PC,AB.nomeProg);
 }
-/* com problemas ainda
-void fifo(char *listaDeProgramas){
+// com problemas ainda
+void fifo(const char *listaDeProgramas){
     FILE *fp =fopen(listaDeProgramas,"r");
     char *arraydestrings[90];
     char string[80];
-    int t = 0;
+    char *e;
+    int index;
     int i = 0;
     if (fp == NULL){
         perror("NAO EXISTE O FICHEIRO\n");
         return;
     }
     while(fgets(string,sizeof(string),fp) != 0){
+        e = strchr(string, '\n');
+        index = (int)(e - string);
         arraydestrings[i] = strndup(string,sizeof(string));
-        arraydestrings[i][strlen(string)] = '\0';
-        printf("%s\n",arraydestrings[i]);
+        arraydestrings[i][index] = '\0';
+        printf("%s",arraydestrings[i]);
+        programaRunnerFifo(arraydestrings[i]);
         i++;
     }
-    while(t < i) {
-        programaRunnerFifo(arraydestrings[t]);
-        t++;
-        }
     printf("Precorreu %d programas\n",i);
     fclose(fp);
 }
-*/
+//
 void sjf(char *listaDeProgramas){
     printf("AINDA NAO IMPLEMENTADO\n");
+}
+int Strlen(const char *string){
+    int i = 0;
+    while(string[i] != '\0') i++;
+    return i;
+}
+void strfind(const char*string,char charProcuravel,int *pos){
+    int i = 0;
+    while(string[i] != charProcuravel) {
+        if(string[i] == '\0') {
+            *pos = -1;
+            return ;
+            }
+        i++;
+        }
+    *pos = i;
 }

@@ -1,14 +1,13 @@
-teste2
-pid:4
+programadeteste3
+pid:6
 ppid:1
 prioridade:1
 tempoVida:15
 PC:0
 processValue:15
-I:M 55
-I:A 32
+I:M 100
 I:C 2
-I:L filho2.txt
-I:S 12
-I:M 0
+I:L filho1.txt
+I:A 19
+I:S 5
 T

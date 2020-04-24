@@ -55,7 +55,13 @@ void filho(programa pai);
 void programaRunnerFifo(char *nomeDoPrograma);
 
 //Precorre em fifo
-void fifo(char *listaDeProgramas);
+void fifo(const char *listaDeProgramas);
 
 //Precorre em SJF
 void sjf(char *listaDeProgramas);
+
+//strlenFun
+int Strlen(const char *string);
+
+//Encontra a posição do caracter na string
+void strfind(const char*string,char charProcuravel,int *pos);
