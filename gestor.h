@@ -60,7 +60,7 @@ void fifo(const char *listaDeProgramas);
 //Precorre em SJF
 void sjf(char *listaDeProgramas);
 
-//strlenFun
+//strlen mas para strings menores
 int Strlen(const char *string);
 
 //Encontra a posição do caracter na string

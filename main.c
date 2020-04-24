@@ -1,7 +1,14 @@
 #include "gestor.h"
 
+//----------------------------------------------------------------------------------------------------------------------------------------
+//Authors: Pedro Lopes, Luís Espirito Santo, Pedro Carrasco, Afonso Simões
+//Program that simmulates Escalonation of processes
+//The program is in portuguese language as it was part of the University course:"Sistemas Operativos"(Operative Systems) Second Semmester
+//The Decomentation is also in portuguese
+//----------------------------------------------------------------------------------------------------------------------------------------
+
+
 int main(){
-    // somehow esta com problemas a ler a lista...need fixing
     int option;
     printf("Escolha um metodo para percorrer os programas\n");
     printf("1 -> Metodo FIFO\n");
@@ -18,5 +25,4 @@ int main(){
         exit(0);
         break;
     }
-   //programaRunnerFifo("teste.txt");
 }

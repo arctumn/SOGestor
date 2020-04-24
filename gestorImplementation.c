@@ -182,7 +182,7 @@ void fifo(const char *listaDeProgramas){
     printf("Precorreu %d programas\n",i);
     fclose(fp);
 }
-//
+
 void sjf(char *listaDeProgramas){
     printf("AINDA NAO IMPLEMENTADO\n");
 }
