@@ -136,7 +136,7 @@ void filho(programa pai){
     printf(" Fim do processo filho!\n");
 }
 
-void programaRunner(char *nomeDoPrograma){ // FIFO
+void programaRunnerFifo(char *nomeDoPrograma){ // FIFO
     char ** leitura =(char **)malloc(80*sizeof(char *));
     processo A;
     programa AB;
@@ -149,4 +149,32 @@ void programaRunner(char *nomeDoPrograma){ // FIFO
     percorrerIntrucoes(&AB);
     free(leitura);
     printf(" Counter: %d \nFim do programa:%s\n",AB.infoProcesso.PC,AB.nomeProg);
+}
+/* com problemas ainda
+void fifo(char *listaDeProgramas){
+    FILE *fp =fopen(listaDeProgramas,"r");
+    char *arraydestrings[90];
+    char string[80];
+    int t = 0;
+    int i = 0;
+    if (fp == NULL){
+        perror("NAO EXISTE O FICHEIRO\n");
+        return;
+    }
+    while(fgets(string,sizeof(string),fp) != 0){
+        arraydestrings[i] = strndup(string,sizeof(string));
+        arraydestrings[i][strlen(string)] = '\0';
+        printf("%s\n",arraydestrings[i]);
+        i++;
+    }
+    while(t < i) {
+        programaRunnerFifo(arraydestrings[t]);
+        t++;
+        }
+    printf("Precorreu %d programas\n",i);
+    fclose(fp);
+}
+*/
+void sjf(char *listaDeProgramas){
+    printf("AINDA NAO IMPLEMENTADO\n");
 }

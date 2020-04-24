@@ -1,0 +1,14 @@
+teste2
+pid:4
+ppid:1
+prioridade:1
+tempoVida:15
+PC:0
+processValue:15
+I:M 55
+I:A 32
+I:C 2
+I:L filho1
+I:S 12
+I:M 0
+T

@@ -52,4 +52,10 @@ void percorrerIntrucoes(programa *progAPercorrer);
 void filho(programa pai);
 
 //Precorre todo o programa Serve para o FIFO
-void programaRunner(char *nomeDoPrograma);
+void programaRunnerFifo(char *nomeDoPrograma);
+
+//Precorre em fifo
+void fifo(char *listaDeProgramas);
+
+//Precorre em SJF
+void sjf(char *listaDeProgramas);
