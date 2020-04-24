@@ -1,5 +1,17 @@
 # SOGestor
 
+## Tasks concluidos
+
+- [x] -> parser feito com teste
+- [x] -> Executor de instruções (Provavelmente apenas FIFO)
+- [x] -> Executor de programas metodo não preemptivo (FIFO)
+- [x] -> Makefile
+- [x] -> Teste para modo não preemptivo (FIFO)
+- [ ] -> Relatorio parte1(fifo implementado)
+- [ ] -> Executor de programas metodo preemptivo (SJF)
+- [ ] -> adicionar outros
+
+
 ## Hiperligaçoes
 
 [valgrind](http://valgrind.org/) -> Otimo verificador de erros de memoria para usar valgrind ./(nome do executavel)
@@ -50,13 +62,6 @@ if(!(strncmp(arraydestrings[i],"I:",strlen("I:")))){
         }
 ```
 
-## Tasks concluidos
-
-- [x] -> parser feito com teste
-- [x] -> Executor de instruções
-- [x] -> Executor de programas
-- [x] -> Makefile
-- [ ] -> adicionar outros
 
 
 ## Explicações de markdown by arctumn
