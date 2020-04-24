@@ -73,7 +73,7 @@ programa juntor(processo info,char ** listaDeIntrucoesInfo){
 }
 
 //Corrige o problema gerado pela strings do primeiro programa
-int globalhf = 1;
+//int globalhf = 1;
 
 void percorrerIntrucoes(programa *progAPercorrer){
     int forkjump = 0;
@@ -100,11 +100,8 @@ void percorrerIntrucoes(programa *progAPercorrer){
             printf(" Entrei numa instruçao L \n");
             char *nome = strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L ");
             strfind(nome,'\n',&pos);
-            if(globalhf){
-            nome[pos-1] = '\0';
-            globalhf = 0;
-            }
-            else nome[pos] = '\0';    
+            if(nome[pos-1] == '\r') nome[pos-1] = '\0';
+            else nome[pos] = '\0';   
             printf(" Novo nome:%s",nome);
             progAPercorrer->infoProcesso.nome = nome;
             progAPercorrer->nomeProg = progAPercorrer->infoProcesso.nome;
