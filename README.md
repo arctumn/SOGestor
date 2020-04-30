@@ -1,5 +1,6 @@
 # SOGestor
 
+[![Run on Repl.it](https://repl.it/badge/github/arctumn/SOGestor)](https://repl.it/github/arctumn/SOGestor)
 ## Tasks concluidos
 
 - [x] -> parser feito com teste
