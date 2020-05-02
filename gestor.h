@@ -42,7 +42,6 @@ typedef struct programa{
 
 //Pega num ficheiro e da parse dele separando em instruçoes e na estrutura que o define
 void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *processoAtual);
-
 //Unifica numa estrutura as intruções de um programa e a informações sobre o programa
 programa juntor(int arrivalTime,processo info,char ** listaDeIntrucoesInfo);
 

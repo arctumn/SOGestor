@@ -1,5 +1,6 @@
 # SOGestor
 
+[![Run on Repl.it](https://repl.it/badge/github/arctumn/SOGestor)](https://repl.it/github/arctumn/SOGestor)
 ## Tasks concluidos
 
 - [x] -> parser feito com teste
@@ -7,7 +8,7 @@
 - [x] -> Executor de programas metodo não preemptivo (FIFO)
 - [x] -> Makefile
 - [x] -> Teste para modo não preemptivo (FIFO)
-- [ ] -> Relatorio parte1(fifo implementado)
+- [x] -> Relatorio parte1(fifo implementado)
 - [ ] -> Executor de programas metodo preemptivo (SJF)
 - [ ] -> adicionar outros
 
@@ -19,6 +20,8 @@
 [Aprender a usar o git](https://rogerdudler.github.io/git-guide/) -> Otimo guia para aprenderem a usar git
 
 [Memes](https://www.reddit.com/r/memes/) -> DONT LET YOUR MEMES BE DREAMS
+
+[Repl.it](https://repl.it/) -> Usar isto para ser fácil programar em conjunto
 
 ## Makefile
 
