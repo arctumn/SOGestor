@@ -37,7 +37,7 @@ typedef struct programa{
     processo infoProcesso;
     char ** listaDeIntrucoes;
     int estado;
-}programa;
+}programa;        
 
 //Pega num ficheiro e da parse dele separando em instruçoes e na estrutura que o define
 void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *processoAtual);

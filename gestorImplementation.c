@@ -1,5 +1,7 @@
 #include "gestor.h"
 
+int time=0;
+
 void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *processoAtual){ // DEVOLVER OQUE?
     FILE *fp1 = fopen(nomeFich,"r");
     char *arraydestrings[90];
@@ -184,8 +186,10 @@ void fifo(const char *listaDeProgramas){
 }
 
 void sjf(char *listaDeProgramas){
-    printf("AINDA NAO IMPLEMENTADO\n");
-}
+
+} 
+     
+
 int Strlen(const char *string){
     int i = 0;
     while(string[i] != '\0') i++;
