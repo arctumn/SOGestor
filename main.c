@@ -25,4 +25,5 @@ int main(){
         exit(0);
         break;
     }
+    exit(0);
 }

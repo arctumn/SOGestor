@@ -63,17 +63,16 @@ void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *p
         return;
     }
 }
-programa juntor(processo info,char ** listaDeIntrucoesInfo){
+programa juntor(int arrivalTime,processo info,char ** listaDeIntrucoesInfo){
     programa associado;
     associado.nomeProg = info.nome;
     associado.infoProcesso = info;
     associado.listaDeIntrucoes = listaDeIntrucoesInfo;
     associado.estado = 0;
+    associado.arrivalTime = arrivalTime;
     return associado;
 }
 
-//Corrige o problema gerado pela strings do primeiro programa
-//int globalhf = 1;
 
 void percorrerIntrucoes(programa *progAPercorrer){
     int forkjump = 0;
@@ -149,7 +148,7 @@ void programaRunnerFifo(char *nomeDoPrograma){ // FIFO
     processo A;
     programa AB;
     atribuidorDeInstrucoes(nomeDoPrograma,leitura,&A);
-    AB = juntor(A,leitura);
+    AB = juntor(0,A,leitura);
     printf("\n");
     printf("Info do processo ->\n");
     printf(" nome:%s pid:%d\n ppid:%d\n prioridade:%d\n tempo de vida:%d\n PC:%d\n processValue:%d\n Quantidade de intruçoes:%d\n",A.nome,A.pid,A.ppid,A.prioridade,A.tempoVida,A.PC,A.processValue,A.quantidadeDeIntrucoes);
@@ -158,7 +157,6 @@ void programaRunnerFifo(char *nomeDoPrograma){ // FIFO
     free(leitura);
     printf(" Counter: %d \nFim do programa:%s\n",AB.infoProcesso.PC,AB.nomeProg);
 }
-// com problemas ainda
 void fifo(const char *listaDeProgramas){
     FILE *fp =fopen(listaDeProgramas,"r");
     char *arraydestrings[90];
@@ -171,7 +169,7 @@ void fifo(const char *listaDeProgramas){
         return;
     }
     while(fgets(string,sizeof(string),fp) != 0){
-        e = strchr(string, '\n');
+        e = strchr(string, ' ');
         index = (int)(e - string);
         arraydestrings[i] = strndup(string,sizeof(string));
         arraydestrings[i][index] = '\0';
