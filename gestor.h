@@ -65,3 +65,6 @@ int Strlen(const char *string);
 
 //Encontra a posição do caracter na string
 void strfind(const char*string,char charProcuravel,int *pos);
+
+//Executar em SJF
+void percorrerIntrucoesSJF(programa *progAPercorrer);

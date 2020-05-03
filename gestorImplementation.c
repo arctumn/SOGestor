@@ -133,9 +133,7 @@ void percorrerIntrucoes(programa *progAPercorrer){
             progAPercorrer->infoProcesso.PC++;
             return;
         }
-        if (forkFlag) {
-            forkFlag = 0;
-        }
+        if (forkFlag) forkFlag = 0;
         else progAPercorrer->infoProcesso.PC++;
         printf(" PC:%d\n",progAPercorrer->infoProcesso.PC);
 	}
@@ -147,11 +145,10 @@ void filho(programa pai){
     percorrerIntrucoes(&pai);
     printf(" Fim do processo filho!\n");
 }
-void percorrerIntrucoessjf(programa *progAPercorrer){
+void percorrerIntrucoesSJF(programa *progAPercorrer){
     int forkjump = 0;
     int forkFlag = 0;
     int pos = 0;
-	while(progAPercorrer->infoProcesso.PC < progAPercorrer->infoProcesso.quantidadeDeIntrucoes){
 		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"M",strlen("M")))){
             a++;
             printf(" Entrei numa instruçao M \n");
@@ -159,20 +156,20 @@ void percorrerIntrucoessjf(programa *progAPercorrer){
             printf(" Valor do processo: %d\n",progAPercorrer->infoProcesso.processValue); 
         }
 		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"A",strlen("A")))){
-           a++;
+            a++;
             printf(" Entrei numa instruçao A \n");
             progAPercorrer->infoProcesso.processValue += atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"A "));
             printf(" Valor do processo: %d\n",progAPercorrer->infoProcesso.processValue);
         }
 		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"S",strlen("S")))){
-                       a++;
+            a++;
             printf(" Entrei numa instruçao S \n");
             progAPercorrer->infoProcesso.processValue -= atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"S "));
             printf(" Valor do processo: %d\n",progAPercorrer->infoProcesso.processValue);
         }
             //EXECV()
 		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L",strlen("L")))){
-                 a++;
+            a++;
             printf(" Entrei numa instruçao L \n");
             char *nome = strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L ");
             strfind(nome,'\n',&pos);
@@ -192,7 +189,7 @@ void percorrerIntrucoessjf(programa *progAPercorrer){
         }
             //FORK()
         if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C",strlen("C")))){
-          a++;
+            a++;
             printf(" Entrei numa instruçao C \n");
             forkjump = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C "));
             forkFlag = 1;
@@ -201,21 +198,18 @@ void percorrerIntrucoessjf(programa *progAPercorrer){
             printf("VALOR DO PC:%d\n",progAPercorrer->infoProcesso.PC);
         }   //WAITING()
         if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"B",strlen("B")))){
-          a++;
+            a++;
             printf(" Entrei numa instruçao B \n");
             progAPercorrer->estado = 1; //PARADO
             progAPercorrer->infoProcesso.PC++;
             return;
         }
-        if((a=20))
-        {//o 20 vai ser o numero que vamos ler do ficheiro so que nao estou a conseguir ler
-        printf("vou parar o programa");
-                progAPercorrer->estado =1;//estado WAITING
+        if((a=20)){//o 20 vai ser o numero que vamos ler do ficheiro so que nao estou a conseguir ler
+            printf("vou parar o programa");
+            progAPercorrer->estado =1;//estado WAITING
           return;
         }
-        if (forkFlag) {
-            forkFlag = 0;
-        }
+        if (forkFlag) forkFlag = 0;
         else progAPercorrer->infoProcesso.PC++;
         printf(" PC:%d\n",progAPercorrer->infoProcesso.PC);
 	}
@@ -258,7 +252,7 @@ void fifo(const char *listaDeProgramas){
     printf("Precorreu %d programas\n",i);
     fclose(fp);
 }
-void programaRunnerSjf(char *nomeDoPrograma,int num){
+void programaRunnerSjf(char *nomeDoPrograma,int num){ //isto nao vai ser implementado assim pois isso não permite fazer trocas de programas
   char ** leitura =(char **)malloc(80*sizeof(char *));
     processo A;
     programa AB;
@@ -274,42 +268,43 @@ void programaRunnerSjf(char *nomeDoPrograma,int num){
 
 }
 
-void sjf(const char *listaDeProgramas){
-FILE *fp =fopen(listaDeProgramas,"r");
+void sjf(const char *listaDeProgramas){ // não pode se implementado assim e não ponhas const char isso não é sempre igual
+    FILE *fp =fopen(listaDeProgramas,"r");
     char *arraydestrings[90];
     char string[80];
     char *e;
     int num;
     int index;
     int i = 0;
-      // ele esta entrar neste if nao sei porque raio
-        if(fp==NULL){
-          perror("Nao existe o ficheiro\n");
-        }
-while(fgets(string,sizeof(string),fp)!=0){
-  e = strchr(string, ' ');
-  num=atoi(strtok(string,"e "));   // como é que meto isto a ler o numero
-  index=(int)(e-string);
- arraydestrings[i] = strndup(string,sizeof(string));  arraydestrings[i][index]='\0';
-  printf("%s",arraydestrings[i]);
-  programaRunnerSjf(arraydestrings[i],num);
-  i++;
-  }
-  printf("precorreu %d programas \n",i);
-  fclose(fp);
+      // ele esta entrar neste if nao sei porque raio (NÂO ta a diferenciar isto nao é o fifo nao faças isto le a parte a abaixo)
+    if(fp==NULL){
+        perror("Nao existe o ficheiro\n");
+    }
+    while(fgets(string,sizeof(string),fp)!=0){ // TEM DE SER TODO MODADO ISTO NÂO É O FIFO
+        e = strchr(string, ' '); // isto é o que premite ler, não o que esta a cima disto
+        num=atoi(strtok(string,"e "));   // como é que meto isto a ler o numero é dessa forma mas acho que estas a procurar isso mal
+        index=(int)(e-string);
+        arraydestrings[i] = strndup(string,sizeof(string));  //poe uma instrução no maximo numa linha não ponhas duas
+        arraydestrings[i][index]='\0';
+        printf("%s",arraydestrings[i]);
+        programaRunnerSjf(arraydestrings[i],num); // isto não vai ser implementado assim, vamos ter de alterar isto
+        i++;
+    }
+    printf("precorreu %d programas \n",i);
+    fclose(fp);
 }
 int Strlen(const char *string){
     int i = 0;
     while(string[i] != '\0') i++;
     return i;
 }
-void strfind(const char*string,char charProcuravel,int *pos){
+void strfind(const char*string,char charProcuravel,int *pos){ //remover isto é inutil
     int i = 0;
     while(string[i] != charProcuravel) {
         if(string[i] == '\0') {
             *pos = -1;
-            return ;
-            }
+            return;
+        }
         i++;
         }
     *pos = i;

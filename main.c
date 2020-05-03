@@ -20,10 +20,10 @@ int main(){
         break;
     case 2:
         sjf("lista.txt");// por implementar
-    default:
+    default: //qualquer outra tecla  fecha o programa o exit fora deste switch não tem sentido
         printf("Saiu do Programa\n");
         exit(0);
         break;
     }
-    exit(0);
+    //exit(0); isto era inutil porque o default nunca iria permitir que isto va acontecer
 }
