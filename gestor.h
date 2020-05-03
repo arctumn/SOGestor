@@ -57,7 +57,7 @@ void programaRunnerFifo(char *nomeDoPrograma);
 void fifo(const char *listaDeProgramas);
 
 //Precorre em SJF
-void sjf(char *listaDeProgramas);
+void sjf(const char *listaDeProgramas);
 
 //strlen mas para strings menores
 int Strlen(const char *string);
