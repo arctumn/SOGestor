@@ -212,7 +212,7 @@ void percorrerIntrucoesSJF(programa *progAPercorrer){
         if (forkFlag) forkFlag = 0;
         else progAPercorrer->infoProcesso.PC++;
         printf(" PC:%d\n",progAPercorrer->infoProcesso.PC);
-	}
+	
     progAPercorrer->estado = 2; //MORTO
 }
 void programaRunnerFifo(char *nomeDoPrograma){ // FIFO
@@ -257,7 +257,7 @@ void programaRunnerSjf(char *nomeDoPrograma,int num){ //isto nao vai ser impleme
     processo A;
     programa AB;
     atribuidorDeInstrucoes(nomeDoPrograma,leitura,&A);
-    AB = juntor(A,leitura);
+    //AB = juntor(A,leitura); não funciona assim falta o argumento arrival time
     printf("\n");
     printf("Info do processo ->\n");
     printf(" nome:%s pid:%d\n ppid:%d\n prioridade:%d\n tempo de vida:%d\n PC:%d\n processValue:%d\n Quantidade de intruçoes:%d\n",A.nome,A.pid,A.ppid,A.prioridade,A.tempoVida,A.PC,A.processValue,A.quantidadeDeIntrucoes);
