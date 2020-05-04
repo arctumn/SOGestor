@@ -7,7 +7,7 @@
 #include <string.h>
 #include <stdio.h>
 
-int Time=0;
+
 // STRUCT PROCESSO
 //nome -> nome do processo
 //pid -> identificador de processo gestor pid = 0

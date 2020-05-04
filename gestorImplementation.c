@@ -50,7 +50,6 @@ void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *p
             structChecker++;
         }
         if(!(strncmp(arraydestrings[i],"I:",strlen("I:")))){
-            Time++;
             char *I = strtok(arraydestrings[i],"I:");
             arrayFinalStrings[c] = I;
             c++;
@@ -188,4 +187,15 @@ int Strlen(const char *string){
     int i = 0;
     while(string[i] != '\0') i++;
     return i;
+}
+void strfind(const char*string,char charProcuravel,int *pos){ 
+    int i = 0;
+    while(string[i] != charProcuravel) {
+        if(string[i] == '\0') {
+            *pos = -1;
+            return;
+        }
+        i++;
+        }
+    *pos = i;
 }
