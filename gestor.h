@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stdio.h>
 
+int Time=0;
 // STRUCT PROCESSO
 //nome -> nome do processo
 //pid -> identificador de processo gestor pid = 0
@@ -40,6 +41,7 @@ typedef struct programa{
     int arrivalTime;
 }programa;
 
+
 //Pega num ficheiro e da parse dele separando em instruçoes e na estrutura que o define
 void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *processoAtual);
 //Unifica numa estrutura as intruções de um programa e a informações sobre o programa
@@ -58,7 +60,7 @@ void programaRunnerFifo(char *nomeDoPrograma);
 void fifo(const char *listaDeProgramas);
 
 //Precorre em SJF
-void sjf(const char *listaDeProgramas);
+void sjf(char *listaDeProgramas);
 
 //strlen mas para strings menores
 int Strlen(const char *string);
@@ -68,3 +70,5 @@ void strfind(const char*string,char charProcuravel,int *pos);
 
 //Executar em SJF
 void percorrerIntrucoesSJF(programa *progAPercorrer);
+
+void programaRunnerSjf(programa *listaDeProgramas);
