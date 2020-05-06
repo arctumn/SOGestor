@@ -62,21 +62,13 @@ void percorrerIntrucoesSJF(programa *progAPercorrer){
         if (forkFlag) forkFlag = 0;
         else progAPercorrer->infoProcesso.PC++;
         printf(" PC:%d\n",progAPercorrer->infoProcesso.PC);
-	
-    progAPercorrer->estado = 2; //MORTO
+	                                                         
 }
-void programaRunnerSjf(programa *listaDeProgramas){ // falta isto comparar o programa com os programas na lista de waiting
+void programaRunnerSjf(programa *listaDeProgramas, int count){ // falta isto comparar o programa com os programas na lista de waiting
   int i=0;
-  while(listaDeProgramas!=NULL){
-    if(listaDeProgramas[i].estado) i++;
-    percorrerIntrucoesSJF(&listaDeProgramas[i]);
-    if(exTime == listaDeProgramas[i+1].arrivalTime){
-      if(listaDeProgramas[i].infoProcesso.prioridade<listaDeProgramas[i+1].infoProcesso.prioridade){
-        listaDeProgramas[i].estado=1;
-        //listaDeWaiting
-        i++;
-      }
-    }
+  printf("valor do count:%d\n",count);
+  while(i<count){
+    
   }
 }
 void sjf(char *listaDeProgramas){ // não pode se implementado assim e não ponhas const char isso não é sempre igual
@@ -92,22 +84,27 @@ void sjf(char *listaDeProgramas){ // não pode se implementado assim e não ponh
     if(fp==NULL){
         perror("Nao existe o ficheiro\n");
     }
+    char *** leitura =(char ***)malloc(80*sizeof(char **));
+    
     while(fgets(string,sizeof(string),fp)!=0){ // TEM DE SER TODO MODADO ISTO NÂO É O FIFO
-        char ** leitura =(char **)malloc(80*sizeof(char *));
+        char ** leitura2 = (char **)malloc(80*sizeof(char *));
         processo info;
         e = strchr(string, ' '); // isto é o que premite ler, não o que esta a cima disto
         index=(int)(e-string);
         arraydestrings[i] = strndup(string,sizeof(string));
         arraydestrings[i][index]='\0';
-        num = atoi(strtok(e,"A:"));
-        printf("%s",arraydestrings[i]);
-        atribuidorDeInstrucoes( arraydestrings[i], leitura, &info);
-        listaProgramas[i]=juntor(num,info,leitura);
+        num = atoi(strtok(e," T:"));
+        printf("Arrive:%d\n",num);
+        atribuidorDeInstrucoes(arraydestrings[i],leitura2,&info);
+        leitura[i] = leitura2;
+        free(leitura2);
+        //listaProgramas[i]=juntor(num,info,leitura[i]);
         i++;
-        free(leitura);
     }
-    programaRunnerSjf(listaProgramas);
+    programaRunnerSjf(listaProgramas,i);
     printf("precorreu %d programas \n",i);
+    free(leitura);
     fclose(fp);
 }
+
 

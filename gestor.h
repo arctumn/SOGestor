@@ -71,4 +71,4 @@ void strfind(const char*string,char charProcuravel,int *pos);
 //Executar em SJF
 void percorrerIntrucoesSJF(programa *progAPercorrer);
 
-void programaRunnerSjf(programa *listaDeProgramas);
+void programaRunnerSjf(programa *listaDeProgramas,int counter);
