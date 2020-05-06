@@ -99,7 +99,7 @@ void sjf(char *listaDeProgramas){ // não pode se implementado assim e não ponh
         processo info;
         e = strchr(string, ' '); // isto é o que premite ler, não o que esta a cima disto
         index=(int)(e-string);
-        arraydestrings[i] = strndup(string,sizeof(string));
+        arraydestrings[i] =strndup(string,sizeof(string));
         arraydestrings[i][index]='\0';
         num = atoi(strtok(e," T:"));
         printf("Arrive:%d\n",num);
@@ -111,6 +111,7 @@ void sjf(char *listaDeProgramas){ // não pode se implementado assim e não ponh
     programaRunnerSjf(listaProgramas,i);
     printf("precorreu %d programas \n",i);
     free(leitura);
+    free(listaProgramas);
     fclose(fp);
 }
 
