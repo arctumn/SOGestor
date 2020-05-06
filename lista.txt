@@ -1,3 +1,4 @@
 teste.txt T:0
-teste2.txt T:6
-teste3.txt T:13
+teste2.txt T:5
+teste3.txt T:11 
+//CUIDADO METER OS ARRIVAL TIMES BEMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM

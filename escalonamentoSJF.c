@@ -5,26 +5,26 @@ void percorrerIntrucoesSJF(programa *progAPercorrer){
     int forkFlag = 0;
     int pos = 0;
 		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"M",strlen("M")))){
-            exTime++;
+      
             printf(" Entrei numa instruçao M \n");
             progAPercorrer->infoProcesso.processValue = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"M "));
             printf(" Valor do processo: %d\n",progAPercorrer->infoProcesso.processValue); 
         }
 		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"A",strlen("A")))){
-            exTime++;
+
             printf(" Entrei numa instruçao A \n");
             progAPercorrer->infoProcesso.processValue += atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"A "));
             printf(" Valor do processo: %d\n",progAPercorrer->infoProcesso.processValue);
         }
 		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"S",strlen("S")))){
-            exTime++;
+
             printf(" Entrei numa instruçao S \n");
             progAPercorrer->infoProcesso.processValue -= atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"S "));
             printf(" Valor do processo: %d\n",progAPercorrer->infoProcesso.processValue);
         }
             //EXECV()
 		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L",strlen("L")))){
-            exTime++;
+
             printf(" Entrei numa instruçao L \n");
             char *nome = strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L ");
             strfind(nome,'\n',&pos);
@@ -42,25 +42,24 @@ void percorrerIntrucoesSJF(programa *progAPercorrer){
             //NÂO SEJA FILHO
             else  atribuidorDeInstrucoes(progAPercorrer->infoProcesso.nome,progAPercorrer->listaDeIntrucoes,&progAPercorrer->infoProcesso);
         }
+        
             //FORK()
         if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C",strlen("C")))){
-            exTime++;
+
             printf(" Entrei numa instruçao C \n");
             forkjump = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C "));
             forkFlag = 1;
-            filho(*progAPercorrer);
+            //filho(*progAPercorrer);
             progAPercorrer->infoProcesso.PC = progAPercorrer->infoProcesso.PC + forkjump;
-            printf("VALOR DO PC:%d\n",progAPercorrer->infoProcesso.PC);
+            exTime+= forkjump;
         }   //WAITING()
         if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"B",strlen("B")))){
-            exTime++;
+
             printf(" Entrei numa instruçao B \n");
             progAPercorrer->estado = 1; //PARADO
-            progAPercorrer->infoProcesso.PC++;
-            return;
         }
         if (forkFlag) forkFlag = 0;
-        else progAPercorrer->infoProcesso.PC++;
+        else {progAPercorrer->infoProcesso.PC++;exTime++;}
         printf(" PC:%d\n",progAPercorrer->infoProcesso.PC);
 	                                                         
 }
@@ -68,7 +67,12 @@ void programaRunnerSjf(programa *listaDeProgramas, int count){ // falta isto com
   int i=0;
   printf("valor do count:%d\n",count);
   while(i<count){
-    
+    while(exTime < listaDeProgramas[i+1].arrivalTime){//isto não esta muito mal,esta pessimo
+      percorrerIntrucoesSJF(&listaDeProgramas[i]);
+      printf("%d\n",exTime);
+    }
+    printf("OLA\n");
+    i++;
   }
 }
 void sjf(char *listaDeProgramas){ // não pode se implementado assim e não ponhas const char isso não é sempre igual
@@ -97,8 +101,7 @@ void sjf(char *listaDeProgramas){ // não pode se implementado assim e não ponh
         printf("Arrive:%d\n",num);
         atribuidorDeInstrucoes(arraydestrings[i],leitura2,&info);
         leitura[i] = leitura2;
-        free(leitura2);
-        //listaProgramas[i]=juntor(num,info,leitura[i]);
+        listaProgramas[i]=juntor(num,info,leitura[i]);
         i++;
     }
     programaRunnerSjf(listaProgramas,i);
