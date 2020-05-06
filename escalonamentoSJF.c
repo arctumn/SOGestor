@@ -67,11 +67,15 @@ void programaRunnerSjf(programa *listaDeProgramas, int count){ // falta isto com
   int i=0;
   printf("valor do count:%d\n",count);
   while(i<count){
+    if(listaDeProgramas[i+1].nomeProg == NULL){ //tempFix
+      percorrerIntrucoes(&listaDeProgramas[i]);
+      exTime+=listaDeProgramas[i].infoProcesso.PC;
+      printf("Execution time:%d\n",exTime);
+    }
     while(exTime < listaDeProgramas[i+1].arrivalTime){//isto não esta muito mal,esta pessimo
       percorrerIntrucoesSJF(&listaDeProgramas[i]);
-      printf("%d\n",exTime);
+      printf("Execution time:%d\n",exTime);
     }
-    printf("OLA\n");
     i++;
   }
 }
@@ -80,7 +84,7 @@ void sjf(char *listaDeProgramas){ // não pode se implementado assim e não ponh
     char *arraydestrings[90];
     char string[80];
     char *e;
-    programa listaProgramas[80];
+    programa *listaProgramas=(programa *)calloc(80,sizeof(programa));
     int num;
     int index;
     int i = 0;
