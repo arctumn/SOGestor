@@ -5,6 +5,7 @@
 //Program that simmulates Escalonation of processes
 //The program is in portuguese language as it was part of the University course:"Sistemas Operativos"(Operative Systems) Second Semmester
 //The Decomentation is also in portuguese
+//Entrega -> PARTE 1
 //----------------------------------------------------------------------------------------------------------------------------------------
 
 
