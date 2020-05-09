@@ -71,21 +71,21 @@ void programaRunnerSjf(programa *listaDeProgramas, int count){ // falta isto com
   printf("valor do count:%d\n",count);
   while(espera[j].nomeProg != NULL && listaDeProgramas[i].nomeProg !=NULL){
     int alea=rand()%100;
-    if(listaDeProgramas[i+1].arrivalTime == exTime && (listaDeProgramas[i].infoProcesso.prioridade<listaDeProgramas[i+1].infoProcesso.prioridade) || ){
-          if(listaDeProgramas[i].infoProcesso.)
+    if(listaDeProgramas[i+1].arrivalTime == exTime && (listaDeProgramas[i].infoProcesso.prioridade<listaDeProgramas[i+1].infoProcesso.prioridade || listaDeProgramas[i].estado == 2)){        
       z = 0;
-            while(espera[z].nomeProg!=NULL){
-                if(espera[z].infoProcesso.prioridade>listaDeProgramas[i+1].infoProcesso.prioridade){
-                  programa p = listaDeProgramas[i];
-                  listaDeProgramas[i]=espera[z];
-                  espera[z]=p;
-                  espera[z+1]=listaDeProgramas[i+1];
-                 percorrerIntrucoesSJF(&listaDeProgramas[i]);
-                }
-                z++;
+      if(espera[z].nomeProg!=NULL){
+        while(espera[z].nomeProg!=NULL){
+            if(espera[z].infoProcesso.prioridade>listaDeProgramas[i+1].infoProcesso.prioridade){
+              programa p = listaDeProgramas[i];
+              listaDeProgramas[i]=espera[z];
+              espera[z]=p;
+              espera[z+1]=listaDeProgramas[i+1];
+              percorrerIntrucoesSJF(&listaDeProgramas[i]);
             }
-            espera[z]=listaDeProgramas[i];
-     espera[1]=listaDeProgramas[i];
+            z++;
+              }
+        }
+        else  espera[z]=listaDeProgramas[i]; // depois disto percorrer as instruções de i+1
       i++;
     }
     if(alea<50 && espera[j].nomeProg != NULL){
