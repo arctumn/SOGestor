@@ -65,18 +65,46 @@ void percorrerIntrucoesSJF(programa *progAPercorrer){
 }
 void programaRunnerSjf(programa *listaDeProgramas, int count){ // falta isto comparar o programa com os programas na lista de waiting
   int i=0;
+  int j=0;
+  int z = 0;
+  programa espera[80];
   printf("valor do count:%d\n",count);
-  while(i<count){
+  while(espera[j].nomeProg != NULL && listaDeProgramas[i].nomeProg !=NULL){
+    int alea=rand()%100;
+    if(listaDeProgramas[i+1].arrivalTime == exTime && (listaDeProgramas[i].infoProcesso.prioridade<listaDeProgramas[i+1].infoProcesso.prioridade) || ){
+          if(listaDeProgramas[i].infoProcesso.)
+      z = 0;
+            while(espera[z].nomeProg!=NULL){
+                if(espera[z].infoProcesso.prioridade>listaDeProgramas[i+1].infoProcesso.prioridade){
+                  programa p = listaDeProgramas[i];
+                  listaDeProgramas[i]=espera[z];
+                  espera[z]=p;
+                  espera[z+1]=listaDeProgramas[i+1];
+                 percorrerIntrucoesSJF(&listaDeProgramas[i]);
+                }
+                z++;
+            }
+            espera[z]=listaDeProgramas[i];
+     espera[1]=listaDeProgramas[i];
+      i++;
+    }
+    if(alea<50 && espera[j].nomeProg != NULL){
+      //executa um da lista de espera
+      percorrerIntrucoesSJF(&espera[j]);
+      printf("Execution time:%d\n",exTime);
+      j++;
+    }
     if(listaDeProgramas[i+1].nomeProg == NULL){ //tempFix
       percorrerIntrucoes(&listaDeProgramas[i]);
       exTime+=listaDeProgramas[i].infoProcesso.PC;
       printf("Execution time:%d\n",exTime);
     }
-    while(exTime < listaDeProgramas[i+1].arrivalTime){//isto não esta muito mal,esta pessimo
+    if(alea >=50);
+   /* while(exTime < listaDeProgramas[i+1].arrivalTime){//isto não esta muito mal,esta pessimo
       percorrerIntrucoesSJF(&listaDeProgramas[i]);
       printf("Execution time:%d\n",exTime);
-    }
-    i++;
+    } */
+    
   }
 }
 void sjf(char *listaDeProgramas){ // não pode se implementado assim e não ponhas const char isso não é sempre igual
@@ -88,7 +116,7 @@ void sjf(char *listaDeProgramas){ // não pode se implementado assim e não ponh
     int num;
     int index;
     int i = 0;
-      // ele esta entrar neste if nao sei porque raio (NÂO ta a diferenciar isto nao é o fifo nao faças isto le a parte a abaixo)
+      // ele esta entrar neste ao é o fifo nao faças isto le a parte a abaixo)
     if(fp==NULL){
         perror("Nao existe o ficheiro\n");
     }
