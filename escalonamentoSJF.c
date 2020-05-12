@@ -61,50 +61,57 @@ void percorrerIntrucoesSJF(programa *progAPercorrer){
         if (forkFlag) forkFlag = 0;
         else {progAPercorrer->infoProcesso.PC++;exTime++;}
         printf(" PC:%d\n",progAPercorrer->infoProcesso.PC);
+      
 	                                                         
 }
 void programaRunnerSjf(programa *listaDeProgramas, int count){ // falta isto comparar o programa com os programas na lista de waiting
+//1-processo 3.... 2-processo 1.... 3-processo 4
   int i=0;
   int j=0;
   int z = 0;
+  int h = 0;
+  int t;
   programa espera[80];
   printf("valor do count:%d\n",count);
-  while(espera[j].nomeProg != NULL && listaDeProgramas[i].nomeProg !=NULL){
+  while(listaDeProgramas[i].nomeProg !=NULL){
     int alea=rand()%100;
-    if(listaDeProgramas[i+1].arrivalTime == exTime && (listaDeProgramas[i].infoProcesso.prioridade<listaDeProgramas[i+1].infoProcesso.prioridade || listaDeProgramas[i].estado == 2)){        
-      z = 0;
-      if(espera[z].nomeProg!=NULL){
+    if(listaDeProgramas[i+1].arrivalTime == exTime && listaDeProgramas[i].infoProcesso.prioridade>listaDeProgramas[i+1].infoProcesso.prioridade){        
+      printf("Menor prioridade\n");
+          
+          espera[t] = listaDeProgramas[i];
+          while(listaDeProgramas[h].nomeProg !=NULL) {
+            listaDeProgramas[h] = listaDeProgramas[h+1];
+            h++;
+            }
         while(espera[z].nomeProg!=NULL){
+          z = 0;
+          printf("entrei no while do espera\n");
+          printf("z=%d\n",z);
             if(espera[z].infoProcesso.prioridade>listaDeProgramas[i+1].infoProcesso.prioridade){
+              printf("pus o gajo em espera a executar\n");
               programa p = listaDeProgramas[i];
               listaDeProgramas[i]=espera[z];
               espera[z]=p;
               espera[z+1]=listaDeProgramas[i+1];
               percorrerIntrucoesSJF(&listaDeProgramas[i]);
             }
-            z++;
-              }
+
+           z++;
+          }
+          t++;
+        } // depois disto percorrer as instruções de i+1
+      while(1){
+        
+        if(listaDeProgramas[i].listaDeIntrucoes == NULL){
+            listaDeProgramas[i].estado = 2;
+            break;
         }
-        else  espera[z]=listaDeProgramas[i]; // depois disto percorrer as instruções de i+1
-      i++;
-    }
-    if(alea<50 && espera[j].nomeProg != NULL){
-      //executa um da lista de espera
-      percorrerIntrucoesSJF(&espera[j]);
-      printf("Execution time:%d\n",exTime);
-      j++;
-    }
-    if(listaDeProgramas[i+1].nomeProg == NULL){ //tempFix
-      percorrerIntrucoes(&listaDeProgramas[i]);
-      exTime+=listaDeProgramas[i].infoProcesso.PC;
-      printf("Execution time:%d\n",exTime);
-    }
-    if(alea >=50);
-   /* while(exTime < listaDeProgramas[i+1].arrivalTime){//isto não esta muito mal,esta pessimo
-      percorrerIntrucoesSJF(&listaDeProgramas[i]);
-      printf("Execution time:%d\n",exTime);
-    } */
-    
+        if(listaDeProgramas[i+1].arrivalTime == exTime) break;
+        percorrerIntrucoesSJF(&listaDeProgramas[i]);
+        exTime += listaDeProgramas[i].infoProcesso.PC;
+      }
+   
+    if(listaDeProgramas[i].estado == 2) i++;
   }
 }
 void sjf(char *listaDeProgramas){ // não pode se implementado assim e não ponhas const char isso não é sempre igual
