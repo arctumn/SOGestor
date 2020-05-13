@@ -4,26 +4,31 @@ void percorrerIntrucoesSJF(programa *progAPercorrer){
     int forkjump = 0;
     int forkFlag = 0;
     int pos = 0;
+    printf("sou a string:%s",progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC]);
+    if(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC+1] == NULL){
+      progAPercorrer->estado = 2;
+      return;
+    }
 		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"M",strlen("M")))){
       
             printf(" Entrei numa instruçao M \n");
             progAPercorrer->infoProcesso.processValue = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"M "));
             printf(" Valor do processo: %d\n",progAPercorrer->infoProcesso.processValue); 
         }
-		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"A",strlen("A")))){
+		else if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"A",strlen("A")))){
 
             printf(" Entrei numa instruçao A \n");
             progAPercorrer->infoProcesso.processValue += atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"A "));
             printf(" Valor do processo: %d\n",progAPercorrer->infoProcesso.processValue);
         }
-		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"S",strlen("S")))){
+		else if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"S",strlen("S")))){
 
             printf(" Entrei numa instruçao S \n");
             progAPercorrer->infoProcesso.processValue -= atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"S "));
             printf(" Valor do processo: %d\n",progAPercorrer->infoProcesso.processValue);
         }
             //EXECV()
-		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L",strlen("L")))){
+		else if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L",strlen("L")))){
 
             printf(" Entrei numa instruçao L \n");
             char *nome = strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L ");
@@ -44,20 +49,23 @@ void percorrerIntrucoesSJF(programa *progAPercorrer){
         }
         
             //FORK()
-        if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C",strlen("C")))){
+        else if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C",strlen("C")))){
 
             printf(" Entrei numa instruçao C \n");
             forkjump = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C "));
             forkFlag = 1;
+            printf("valor do forkjump:%d\n",forkjump);
             //filho(*progAPercorrer);
-            progAPercorrer->infoProcesso.PC = progAPercorrer->infoProcesso.PC + forkjump;
+            progAPercorrer->infoProcesso.PC += forkjump;
+            
             exTime+= forkjump;
         }   //WAITING()
-        if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"B",strlen("B")))){
+        else if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"B",strlen("B")))){
 
             printf(" Entrei numa instruçao B \n");
             progAPercorrer->estado = 1; //PARADO
         }
+        else progAPercorrer->estado = 2;
         if (forkFlag) forkFlag = 0;
         else {progAPercorrer->infoProcesso.PC++;exTime++;}
         printf(" PC:%d\n",progAPercorrer->infoProcesso.PC);
@@ -74,10 +82,10 @@ void programaRunnerSjf(programa *listaDeProgramas, int count){ // falta isto com
   programa espera[80];
   printf("valor do count:%d\n",count);
   while(listaDeProgramas[i].nomeProg !=NULL){
-    int alea=rand()%100;
-    if(listaDeProgramas[i+1].arrivalTime == exTime && listaDeProgramas[i].infoProcesso.prioridade>listaDeProgramas[i+1].infoProcesso.prioridade){        
+      if(listaDeProgramas[i+1].arrivalTime == exTime){
+    if(listaDeProgramas[i].infoProcesso.prioridade > listaDeProgramas[i+1].infoProcesso.prioridade || (listaDeProgramas[i].nomeProg==NULL && espera[z].nomeProg!=NULL) ){        
       printf("Menor prioridade\n");
-          
+        if(listaDeProgramas[i].nomeProg!=NULL)
           espera[t] = listaDeProgramas[i];
           while(listaDeProgramas[h].nomeProg !=NULL) {
             listaDeProgramas[h] = listaDeProgramas[h+1];
@@ -87,12 +95,11 @@ void programaRunnerSjf(programa *listaDeProgramas, int count){ // falta isto com
           z = 0;
           printf("entrei no while do espera\n");
           printf("z=%d\n",z);
-            if(espera[z].infoProcesso.prioridade>listaDeProgramas[i+1].infoProcesso.prioridade){
+            if(espera[z].infoProcesso.prioridade<listaDeProgramas[i].infoProcesso.prioridade || listaDeProgramas[i].nomeProg==NULL){
               printf("pus o gajo em espera a executar\n");
               programa p = listaDeProgramas[i];
               listaDeProgramas[i]=espera[z];
               espera[z]=p;
-              espera[z+1]=listaDeProgramas[i+1];
               percorrerIntrucoesSJF(&listaDeProgramas[i]);
             }
 
@@ -100,18 +107,27 @@ void programaRunnerSjf(programa *listaDeProgramas, int count){ // falta isto com
           }
           t++;
         } // depois disto percorrer as instruções de i+1
+       else{
+          espera[z]=listaDeProgramas[i+1];
+          while(listaDeProgramas[h].nomeProg !=NULL) {
+          listaDeProgramas[h] = listaDeProgramas[h+1];
+          h++;
+          }
+        }
+      }
+        int pca;
       while(1){
-        
-        if(listaDeProgramas[i].listaDeIntrucoes == NULL){
-            listaDeProgramas[i].estado = 2;
+          pca = listaDeProgramas[i].infoProcesso.PC;
+          printf("Valor de PCA:%d e a string é:%s e o estado é:%d\n",pca,listaDeProgramas[i].listaDeIntrucoes[pca],listaDeProgramas[i].estado);
+        if(listaDeProgramas[i].estado == 2){
+          //adicionar caso em que o programo morre aos 4 seg mas o outro so chega aos 7 , temos de ir ver a lista de espera
+            i++;
             break;
         }
         if(listaDeProgramas[i+1].arrivalTime == exTime) break;
         percorrerIntrucoesSJF(&listaDeProgramas[i]);
         exTime += listaDeProgramas[i].infoProcesso.PC;
       }
-   
-    if(listaDeProgramas[i].estado == 2) i++;
   }
 }
 void sjf(char *listaDeProgramas){ // não pode se implementado assim e não ponhas const char isso não é sempre igual
@@ -136,7 +152,7 @@ void sjf(char *listaDeProgramas){ // não pode se implementado assim e não ponh
         index=(int)(e-string);
         arraydestrings[i] =strndup(string,sizeof(string));
         arraydestrings[i][index]='\0';
-        num = atoi(strtok(e," T:"));
+        num = atoi((const char *)strtok(e," T:"));
         printf("Arrive:%d\n",num);
         atribuidorDeInstrucoes(arraydestrings[i],leitura2,&info);
         leitura[i] = leitura2;
