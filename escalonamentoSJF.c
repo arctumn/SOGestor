@@ -143,10 +143,10 @@ void sjf(char *listaDeProgramas){ // não pode se implementado assim e não ponh
     if(fp==NULL){
         perror("Nao existe o ficheiro\n");
     }
-    char *** leitura =(char ***)malloc(80*sizeof(char **));
+    char *** leitura =(char ***)calloc(80,sizeof(char **));
     
     while(fgets(string,sizeof(string),fp)!=0){ // TEM DE SER TODO MODADO ISTO NÂO É O FIFO
-        char ** leitura2 = (char **)malloc(80*sizeof(char *));
+        char ** leitura2 = (char **)calloc(80,sizeof(char *));
         processo info;
         e = strchr(string, ' '); // isto é o que premite ler, não o que esta a cima disto
         index=(int)(e-string);
