@@ -79,28 +79,36 @@ void programaRunnerSjf(programa *listaDeProgramas, int count){ // falta isto com
   int z = 0;
   int h = 0;
   int t;
-  programa espera[80];
+  int b;
+  programa espera[80] ;
   printf("valor do count:%d\n",count);
   while(listaDeProgramas[i].nomeProg !=NULL){
-      if(listaDeProgramas[i+1].arrivalTime == exTime){
-    if(listaDeProgramas[i].infoProcesso.prioridade > listaDeProgramas[i+1].infoProcesso.prioridade || (listaDeProgramas[i].nomeProg==NULL && espera[z].nomeProg!=NULL) ){        
+    if(listaDeProgramas[i+1].arrivalTime == exTime){
+      if(listaDeProgramas[i].infoProcesso.prioridade > listaDeProgramas[i+1].infoProcesso.prioridade || (listaDeProgramas[i].nomeProg==NULL && espera[0].nomeProg!=NULL) ){        
       printf("Menor prioridade\n");
         if(listaDeProgramas[i].nomeProg!=NULL)
           espera[t] = listaDeProgramas[i];
+        
           while(listaDeProgramas[h].nomeProg !=NULL) {
+            printf("Entrei no avançar\n");
+            printf("Antes nome:%s",listaDeProgramas[h].nomeProg);
             listaDeProgramas[h] = listaDeProgramas[h+1];
+            printf("Depois nome:%s",listaDeProgramas[h].nomeProg);
             h++;
             }
+             z = 0;
         while(espera[z].nomeProg!=NULL){
-          z = 0;
-          printf("entrei no while do espera\n");
+          printf("\nentrei no while do espera\n");
           printf("z=%d\n",z);
-            if(espera[z].infoProcesso.prioridade<listaDeProgramas[i].infoProcesso.prioridade || listaDeProgramas[i].nomeProg==NULL){
+          printf("lista de espera %s\n",espera[0].nomeProg);
+            if(espera[z].infoProcesso.prioridade<listaDeProgramas[i].infoProcesso.prioridade){
               printf("pus o gajo em espera a executar\n");
               programa p = listaDeProgramas[i];
               listaDeProgramas[i]=espera[z];
               espera[z]=p;
-              percorrerIntrucoesSJF(&listaDeProgramas[i]);
+              b = 0;
+              while(listaDeProgramas[b].nomeProg != NULL){ printf("\nPrograma:%s na pos:%d\n",listaDeProgramas[b].nomeProg,b);b++;
+              }
             }
 
            z++;
@@ -115,15 +123,31 @@ void programaRunnerSjf(programa *listaDeProgramas, int count){ // falta isto com
           }
         }
       }
-        int pca;
-      while(1){
-          pca = listaDeProgramas[i].infoProcesso.PC;
-          printf("Valor de PCA:%d e a string é:%s e o estado é:%d\n",pca,listaDeProgramas[i].listaDeIntrucoes[pca],listaDeProgramas[i].estado);
-        if(listaDeProgramas[i].estado == 2){
-          //adicionar caso em que o programo morre aos 4 seg mas o outro so chega aos 7 , temos de ir ver a lista de espera
-            i++;
-            break;
+      b = 0;
+
+      if(listaDeProgramas[i+1].nomeProg == NULL){
+        if(listaDeProgramas[i].infoProcesso.prioridade > espera[0].infoProcesso.prioridade){
+          programa aux = espera[0];
+          espera[0] = listaDeProgramas[i];
+          listaDeProgramas[i] = aux;
         }
+      }
+      b = 0;
+      while(1){
+        printf("Sou o programa:%s\n",listaDeProgramas[i].nomeProg);   
+        if(listaDeProgramas[i].estado == 2){
+          if(listaDeProgramas[i+1].nomeProg == NULL){
+            while(espera[0].estado != 2) {
+              printf("Sou o programa:%s\n",espera[0].nomeProg);
+              percorrerIntrucoesSJF(&espera[0]);
+            }
+          }
+          //adicionar caso em que o programo morre aos 4 seg mas o outro so chega aos 7 , temos de ir ver a lista de espera
+          printf("\nAcabei Este programa\n\n");
+          i++;
+          break;
+        }
+        
         if(listaDeProgramas[i+1].arrivalTime == exTime) break;
         percorrerIntrucoesSJF(&listaDeProgramas[i]);
         exTime += listaDeProgramas[i].infoProcesso.PC;

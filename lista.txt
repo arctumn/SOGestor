@@ -1,3 +1,3 @@
 teste.txt T:0
 teste2.txt T:2
-teste3.txt T:5
+teste3.txt T:10
