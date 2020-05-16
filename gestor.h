@@ -6,7 +6,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <stdio.h>
-
+#include <pthread.h>
 
 // STRUCT PROCESSO
 //nome -> nome do processo
@@ -60,7 +60,7 @@ void programaRunnerFifo(char *nomeDoPrograma);
 void fifo(const char *listaDeProgramas);
 
 //Precorre em SJF
-void sjf(char *listaDeProgramas);
+void priority(char *listaDeProgramas);
 
 //strlen mas para strings menores
 int Strlen(const char *string);
@@ -69,6 +69,10 @@ int Strlen(const char *string);
 void strfind(const char*string,char charProcuravel,int *pos);
 
 //Executar em SJF
-void percorrerIntrucoesSJF(programa *progAPercorrer);
+void percorrerIntrucoesPriority(programa *progAPercorrer);
 
-void programaRunnerSjf(programa *listaDeProgramas,int counter);
+void programaRunnerPriority(programa *listaDeProgramas,int counter);
+
+void *filhoThread(void *pai);
+
+void percorrerIntrucoesThread(programa *progAPercorrer);

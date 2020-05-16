@@ -12,16 +12,15 @@ int main(){
     int option;
     printf("Escolha um metodo para percorrer os programas\n");
     printf("1 -> Metodo FIFO\n");
-    printf("2 -> Metodo SJF (Por implementar)\n");
+    printf("2 -> Metodo Priority (Preemptive) \n");
     scanf("%d",&option);
     switch (option){
     case 1:
        fifo("lista.txt");
         break;
     case 2:
-        sjf("lista.txt");// por implementar
+        priority("lista.txt");// por implementar
     default: //qualquer outra tecla  fecha o programa o exit fora deste switch não tem sentido
-        printf("Saiu do Programa\n");
         exit(0);
         break;
     }

@@ -1,7 +1,7 @@
 programadeteste3
 pid:6
 ppid:1
-prioridade:4
+prioridade:5
 tempoVida:15
 PC:0
 processValue:15

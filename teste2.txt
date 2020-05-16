@@ -1,7 +1,7 @@
 teste2
 pid:4
 ppid:1
-prioridade:1
+prioridade:4
 tempoVida:15
 PC:0
 processValue:15

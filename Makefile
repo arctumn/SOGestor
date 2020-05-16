@@ -1,6 +1,6 @@
 CC=cc
-FLAGS=-c -Wall
-FLAGSO=-o gestor
+FLAGS=-c -Wall -pthread
+FLAGSO=-o gestor 
 LIBS=-lm
 OBS=main.o gestorImplementation.o #porefinir
 
@@ -8,7 +8,7 @@ OBS=main.o gestorImplementation.o #porefinir
 all : gestor
 
 gestor: main.o gestorImplementation.o
-	$(CC) $(FLAGSO) $(OBS) gestor.h escalonamentoSJF.c
+	$(CC) $(FLAGSO) $(OBS) -pthread gestor.h escalonamentoSJF.c
 	make cleanEx
 #comentar o make cleanEx se quiserem os objetos
 

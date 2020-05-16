@@ -1,6 +1,7 @@
 #include"gestor.h"
 int exTime=0;
-void percorrerIntrucoesSJF(programa *progAPercorrer){
+pthread_t thread1,thread2,thread3;
+void percorrerIntrucoesPriority(programa *progAPercorrer){
     int forkjump = 0;
     int forkFlag = 0;
     int pos = 0;
@@ -56,6 +57,7 @@ void percorrerIntrucoesSJF(programa *progAPercorrer){
             forkFlag = 1;
             printf("valor do forkjump:%d\n",forkjump);
             //filho(*progAPercorrer);
+            pthread_create(&thread1,NULL,filhoThread,(void *)progAPercorrer);
             progAPercorrer->infoProcesso.PC += forkjump;
             
             exTime+= forkjump;
@@ -72,7 +74,7 @@ void percorrerIntrucoesSJF(programa *progAPercorrer){
       
 	                                                         
 }
-void programaRunnerSjf(programa *listaDeProgramas, int count){ // falta isto comparar o programa com os programas na lista de waiting
+void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta isto comparar o programa com os programas na lista de waiting
 //1-processo 3.... 2-processo 1.... 3-processo 4
   int i=0;
   int j=0;
@@ -139,7 +141,7 @@ void programaRunnerSjf(programa *listaDeProgramas, int count){ // falta isto com
           if(listaDeProgramas[i+1].nomeProg == NULL){
             while(espera[0].estado != 2) {
               printf("Sou o programa:%s\n",espera[0].nomeProg);
-              percorrerIntrucoesSJF(&espera[0]);
+              percorrerIntrucoesPriority(&espera[0]);
             }
           }
           //adicionar caso em que o programo morre aos 4 seg mas o outro so chega aos 7 , temos de ir ver a lista de espera
@@ -149,12 +151,12 @@ void programaRunnerSjf(programa *listaDeProgramas, int count){ // falta isto com
         }
         
         if(listaDeProgramas[i+1].arrivalTime == exTime) break;
-        percorrerIntrucoesSJF(&listaDeProgramas[i]);
+        percorrerIntrucoesPriority(&listaDeProgramas[i]);
         exTime += listaDeProgramas[i].infoProcesso.PC;
       }
   }
 }
-void sjf(char *listaDeProgramas){ // não pode se implementado assim e não ponhas const char isso não é sempre igual
+void priority(char *listaDeProgramas){ // não pode se implementado assim e não ponhas const char isso não é sempre igual
     FILE *fp =fopen(listaDeProgramas,"r");
     char *arraydestrings[90];
     char string[80];
@@ -183,11 +185,81 @@ void sjf(char *listaDeProgramas){ // não pode se implementado assim e não ponh
         listaProgramas[i]=juntor(num,info,leitura[i]);
         i++;
     }
-    programaRunnerSjf(listaProgramas,i);
+    programaRunnerPriority(listaProgramas,i);
+    pthread_join(thread2,NULL);
+    pthread_join(thread1,NULL);
     printf("precorreu %d programas \n",i);
     free(leitura);
     free(listaProgramas);
     fclose(fp);
 }
-
+void *filhoThread(void *pai){
+    printf(" Entrei no processo filho!\n\n\n");
+    programa *paiF =calloc(1,sizeof(programa));
+    paiF = (programa *)pai;
+    paiF->infoProcesso.PC++;
+    percorrerIntrucoesThread(paiF);
+    return NULL;
+}
+void percorrerIntrucoesThread(programa *progAPercorrer){
+    int forkjump = 0;
+    int forkFlag = 0;
+    int pos = 0;
+	while(progAPercorrer->infoProcesso.PC < progAPercorrer->infoProcesso.quantidadeDeIntrucoes){
+		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"M",strlen("M")))){
+            
+            
+            progAPercorrer->infoProcesso.processValue = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"M "));
+            
+        }
+		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"A",strlen("A")))){
+           
+            
+            progAPercorrer->infoProcesso.processValue += atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"A "));
+            
+        }
+		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"S",strlen("S")))){
+                       
+            
+            progAPercorrer->infoProcesso.processValue -= atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"S "));
+            
+        }
+            //EXECV()
+		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L",strlen("L")))){
+                 
+            
+            char *nome = strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L ");
+            strfind(nome,'\n',&pos);
+            if(nome[pos-1] == '\r') nome[pos-1] = '\0';
+            else nome[pos] = '\0';   
+            progAPercorrer->infoProcesso.nome = nome;
+            progAPercorrer->nomeProg = progAPercorrer->infoProcesso.nome;
+            //CASO SEJA UM PROCESSO FILHO
+            if(progAPercorrer->infoProcesso.ppid != 1){ 
+            int aux = progAPercorrer->infoProcesso.pid;
+            atribuidorDeInstrucoes(nome,progAPercorrer->listaDeIntrucoes,&progAPercorrer->infoProcesso);
+            progAPercorrer->infoProcesso.ppid = aux;
+            }
+            //NÂO SEJA FILHO
+            else  atribuidorDeInstrucoes(progAPercorrer->infoProcesso.nome,progAPercorrer->listaDeIntrucoes,&progAPercorrer->infoProcesso);
+        }
+            //FORK()
+        if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C",strlen("C")))){
+          
+            forkjump = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C "));
+            forkFlag = 1;
+            pthread_create(&thread2,NULL,filhoThread,(void *)progAPercorrer);
+            progAPercorrer->infoProcesso.PC = progAPercorrer->infoProcesso.PC + forkjump;
+        }   //WAITING()
+        if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"B",strlen("B")))){
+            progAPercorrer->estado = 1; //PARADO
+            progAPercorrer->infoProcesso.PC++;
+            return;
+        }
+        if (forkFlag) forkFlag = 0;
+        else progAPercorrer->infoProcesso.PC++;
+	}
+    progAPercorrer->estado = 2; //MORTO
+    printf("nome do filho:%s valor final do ProcessCounter %d\n",progAPercorrer->nomeProg,progAPercorrer->infoProcesso.PC);
+}
 
