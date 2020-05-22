@@ -1,13 +1,21 @@
 #include "gestor.h"
 
 //----------------------------------------------------------------------------------------------------------------------------------------
-//Authors: Pedro Lopes, Luís Espirito Santo, Pedro Carrasco, Afonso Simões
+//Authors: Pedro Lopes, Luís do Espirito Santo, Pedro Carrasco, Afonso Simões
 //Program that simmulates Escalonation of processes
-//The program is in portuguese language as it was part of the University course:"Sistemas Operativos"(Operative Systems) Second Semmester
-//The Decomentation is also in portuguese
+//The program is in the portuguese language as it was part of the University course:"Sistemas Operativos"(Operative Systems) Second Semmester
+//The Documentation is also in portuguese
 //----------------------------------------------------------------------------------------------------------------------------------------
-
-
+int memory = 100;
+// AINDA NÃO ESTA IMPLEMENTADO
+// PARA TESTAR ALGO COMENTAR NA FORMA /**/  ESTE MAIN 
+int main(){
+  struct mem_Space *head = malloc(sizeof(struct mem_Space));
+   head = createList(memory,head);
+  PrintList(head);
+  
+}
+/*
 int main(){
     int option;
     printf("Escolha um metodo para percorrer os programas\n");
@@ -26,3 +34,4 @@ int main(){
     }
     //exit(0); isto era inutil porque o default nunca iria permitir que isto va acontecer
 }
+*/

@@ -1,6 +1,7 @@
 #include"gestor.h"
 int exTime=0;
-pthread_t thread1,thread2,thread3;
+
+pthread_t thread1,thread2;
 void percorrerIntrucoesPriority(programa *progAPercorrer){
     int forkjump = 0;
     int forkFlag = 0;
@@ -186,20 +187,26 @@ void priority(char *listaDeProgramas){ // não pode se implementado assim e não
         i++;
     }
     programaRunnerPriority(listaProgramas,i);
+    if (thread2 != 0){
     pthread_join(thread2,NULL);
+    }
+    if(thread1 != 0){
     pthread_join(thread1,NULL);
+    }
     printf("precorreu %d programas \n",i);
     free(leitura);
     free(listaProgramas);
     fclose(fp);
 }
 void *filhoThread(void *pai){
+    if(pai == NULL){
+      printf("ERRO programa não existe\n");
+      return NULL;
+    }
     printf(" Entrei no processo filho!\n\n\n");
-    programa *paiF =calloc(1,sizeof(programa));
-    paiF = (programa *)pai;
+    programa *paiF = pai;
     paiF->infoProcesso.PC++;
     percorrerIntrucoesThread(paiF);
-    return NULL;
 }
 void percorrerIntrucoesThread(programa *progAPercorrer){
     int forkjump = 0;
@@ -207,27 +214,16 @@ void percorrerIntrucoesThread(programa *progAPercorrer){
     int pos = 0;
 	while(progAPercorrer->infoProcesso.PC < progAPercorrer->infoProcesso.quantidadeDeIntrucoes){
 		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"M",strlen("M")))){
-            
-            
             progAPercorrer->infoProcesso.processValue = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"M "));
-            
         }
-		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"A",strlen("A")))){
-           
-            
-            progAPercorrer->infoProcesso.processValue += atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"A "));
-            
+		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"A",strlen("A")))){      
+            progAPercorrer->infoProcesso.processValue += atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"A "));    
         }
-		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"S",strlen("S")))){
-                       
-            
-            progAPercorrer->infoProcesso.processValue -= atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"S "));
-            
+		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"S",strlen("S")))){ 
+            progAPercorrer->infoProcesso.processValue -= atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"S ")); 
         }
             //EXECV()
-		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L",strlen("L")))){
-                 
-            
+		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L",strlen("L")))){ 
             char *nome = strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"L ");
             strfind(nome,'\n',&pos);
             if(nome[pos-1] == '\r') nome[pos-1] = '\0';
@@ -245,7 +241,6 @@ void percorrerIntrucoesThread(programa *progAPercorrer){
         }
             //FORK()
         if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C",strlen("C")))){
-          
             forkjump = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"C "));
             forkFlag = 1;
             pthread_create(&thread2,NULL,filhoThread,(void *)progAPercorrer);

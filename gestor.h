@@ -26,6 +26,7 @@ typedef struct processo{
     int PC;         
     int processValue;   
     int quantidadeDeIntrucoes;
+    int programMemory;
 } processo;
 
 // STRUCT PROGRAMA
@@ -76,3 +77,21 @@ void programaRunnerPriority(programa *listaDeProgramas,int counter);
 void *filhoThread(void *pai);
 
 void percorrerIntrucoesThread(programa *progAPercorrer);
+
+//variavel que é responsavel pela memoria dos programas
+extern int memory;
+
+int mem_alloc4Fifo(processo nome);
+
+int dealloc4Fifo(processo nome);
+
+int fragment4Fifo();
+
+
+struct mem_Space {
+    int num;
+    struct mem_Space *nextptr;
+}*stnode;
+
+struct mem_Space *createList(int n,struct mem_Space *stdnode);
+void PrintList(struct mem_Space *stdnode);

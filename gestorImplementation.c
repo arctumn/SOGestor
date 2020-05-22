@@ -4,7 +4,8 @@ void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *p
     char *arraydestrings[90];
     char string[80];
     int t = 0;
-    int i = 0,c = 0,structChecker = 0;
+    processoAtual->programMemory = 0;
+    unsigned int i = 0,c = 0,structChecker = 0;
     if (fp1 == NULL){
         perror("NAO EXISTE O FICHEIRO\n");
         return;
@@ -52,6 +53,10 @@ void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *p
         if(!(strncmp(arraydestrings[i],"I:",strlen("I:")))){
             char *I = strtok(arraydestrings[i],"I:");
             arrayFinalStrings[c] = I;
+            int numalea = rand()%10;
+            while(numalea<3 || numalea>10)
+            numalea = rand()%10;
+            processoAtual->programMemory+=numalea;
             c++;
         }
         i++;
@@ -153,7 +158,7 @@ void programaRunnerFifo(char *nomeDoPrograma){ // FIFO
     AB = juntor(0,A,leitura);
     printf("\n");
     printf("Info do processo ->\n");
-    printf(" nome:%s pid:%d\n ppid:%d\n prioridade:%d\n tempo de vida:%d\n PC:%d\n processValue:%d\n Quantidade de intruçoes:%d\n",A.nome,A.pid,A.ppid,A.prioridade,A.tempoVida,A.PC,A.processValue,A.quantidadeDeIntrucoes);
+    printf(" nome:%s pid:%d\n ppid:%d\n prioridade:%d\n tempo de vida:%d\n PC:%d\n processValue:%d\n Quantidade de intruçoes:%d Memoria do Programa:%d \n",A.nome,A.pid,A.ppid,A.prioridade,A.tempoVida,A.PC,A.processValue,A.quantidadeDeIntrucoes,A.programMemory);
     printf("Execução do processo ->\n");
     percorrerIntrucoes(&AB);
     free(leitura);
