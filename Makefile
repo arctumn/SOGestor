@@ -8,7 +8,7 @@ OBS=main.o gestorImplementation.o #porefinir
 all : gestor
 
 gestor: main.o gestorImplementation.o
-	$(CC) $(FLAGSO) $(OBS) -pthread gestor.h escalonamentoSJF.c
+	$(CC) $(FLAGSO) $(OBS) -pthread gestor.h escalonamentoSJF.c memory.c
 	make cleanEx
 #comentar o make cleanEx se quiserem os objetos
 

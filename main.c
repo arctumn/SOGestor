@@ -10,9 +10,21 @@ int memory = 100;
 // AINDA NÃO ESTA IMPLEMENTADO
 // PARA TESTAR ALGO COMENTAR NA FORMA /**/  ESTE MAIN 
 int main(){
+  int verify = 0;
   struct mem_Space *head = malloc(sizeof(struct mem_Space));
-   head = createList(memory,head);
+  head = createList(memory,head);
   PrintList(head);
+  if(head->nextptr == NULL){
+    printf("ERRO NA LISTA\n");
+  }
+  verify = alocate_mem(5, 30, head);
+  if(verify != -1){
+    printf("Percorreu%d nos\n",verify);
+    PrintList(head);
+  }
+  else printf("Erro a alocar memoria\n");
+  
+
   
 }
 /*

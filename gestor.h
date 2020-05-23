@@ -95,3 +95,6 @@ struct mem_Space {
 
 struct mem_Space *createList(int n,struct mem_Space *stdnode);
 void PrintList(struct mem_Space *stdnode);
+int alocate_mem (int process_id, int num_units,struct mem_Space *mem);
+int deallocate_mem(int process_id,struct mem_Space *mem);
+int fragment_count (struct mem_Space *mem);

@@ -83,6 +83,7 @@ void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta ist
   int h = 0;
   int t;
   int b;
+  int alias=rand()%100;
   programa espera[80] ;
   printf("valor do count:%d\n",count);
   while(listaDeProgramas[i].nomeProg !=NULL){
@@ -135,6 +136,10 @@ void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta ist
           listaDeProgramas[i] = aux;
         }
       }
+      if(alias>70) {
+        percorrerIntrucoesPriority(&espera[0]);
+        exTime += espera[0].infoProcesso.PC;
+      }
       b = 0;
       while(1){
         printf("Sou o programa:%s\n",listaDeProgramas[i].nomeProg);   
@@ -155,6 +160,7 @@ void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta ist
         percorrerIntrucoesPriority(&listaDeProgramas[i]);
         exTime += listaDeProgramas[i].infoProcesso.PC;
       }
+    
   }
 }
 void priority(char *listaDeProgramas){ // não pode se implementado assim e não ponhas const char isso não é sempre igual
