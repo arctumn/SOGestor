@@ -1,79 +1,59 @@
 #include "gestor.h"
 
-struct mem_Space *createList(int n,struct mem_Space *stdnode){
-    struct mem_Space *fnNode, *tmp;
-    int num = 0, i;
-    stnode =malloc(sizeof(struct mem_Space));
-    n = memory;
-    if(stnode == NULL){
-        printf(" Memory can not be allocated.");
-    }
-    else{
-        stnode->num = num;      
-        stnode->nextptr = NULL;
-        tmp = stnode;
-        for(i=2; i<=n; i++){
-            fnNode = (struct mem_Space *)malloc(sizeof(struct mem_Space));
-            if(fnNode == NULL){
-                printf(" Memory can not be allocated.");
-                break;
-            }
-            else{
-                fnNode->num = num;
-                fnNode->nextptr = NULL;
-                tmp->nextptr = fnNode;
-                tmp = tmp->nextptr; 
-            }
-        }
-    }
-    return stdnode;
-}
-void PrintList(struct mem_Space *stdnode){
-    int i = 1;
-    struct mem_Space *tmp;
-    if(stnode == NULL){
-      printf(" List is empty.");
-    }
-    else{
-        tmp = stnode;
-        while(tmp != NULL){
-            printf(" ProcessoID:%d posicao:%d\n", tmp->num,i);
-            tmp = tmp->nextptr;
-            i++;
-        }
-    }
-}
-int alocate_mem (int process_id, int num_units,struct mem_Space *mem){
-    struct mem_Space *aux;
-    if(mem->nextptr == NULL){
-      printf("Algo correu mal\n");
-      return -1;
-    }
-    aux = mem;
-    int nodes = 0;
-    int counter = 0;
-    while(aux != NULL && counter < num_units+1){
-      if(aux->num == 0){
-        aux->num = process_id;
-        counter++;
-        printf("counter:%d e process_id:%d\n",counter,aux->num);
+LL_proc *createList(int n,LL_proc *head){
+  LL_proc *fnNode, *tmp;
+  head = calloc(1,sizeof(LL_proc));
+
+  if(!head)
+    printf(" Memory can not be allocated.\n");
+  
+  else {
+    tmp = head;
+    for(size_t i = 2; i <= MEMORY; i++){
+      fnNode = calloc(1,sizeof(LL_proc));
+
+      if(!fnNode){
+        printf(" Memory can not be allocated.\n");
+        break;
+      } else {
+        tmp->nextptr = fnNode;
+        tmp = tmp->nextptr; 
       }
-      nodes++;
-      printf("nodes:%d\n",nodes);
-      if(aux->nextptr == NULL){
-        printf("Ultimo elemento\n");
-      }
-      aux = aux->nextptr;
+    }
   }
-  if(counter == num_units){ 
-    mem = aux;
-    return nodes;
-  }
-  return -1;
+
+  return head;
 }
 
-int deallocate_mem(int process_id,struct mem_Space *mem){
-  struct mem_Space *aux;
+void PrintList(LL_proc *stdnode){
+  LL_proc *tmp;
+  if(!stdnode)
+    printf(" List is empty.");
+  else{
+    tmp = stdnode;
+    for(size_t i = 1; tmp ;i++) {
+      printf(" ProcessoID:%d posicao:%ld\n", tmp->num, i);
+      tmp = tmp->nextptr;
+    }
+  }
+}
+
+int alocate_mem(int process_id, int num_units,LL_proc *stdnode){
+  size_t nodes = 0;
+  LL_proc *tmp;
+  if(!stdnode)
+    printf(" List is empty.");
+  else{
+    tmp = stdnode;
+    for(size_t i = 1; tmp && nodes < MEMORY+1 ; i++, nodes++, tmp = tmp->nextptr)
+      printf(" num:%d i:%ld\n", tmp->num, i);
+  }
+
+  return nodes;
+}
+
+int deallocate_mem(int process_id,LL_proc *mem){
+  LL_proc *aux;
   aux = mem;
   int test = 0;
   while(aux != NULL){
@@ -86,9 +66,10 @@ int deallocate_mem(int process_id,struct mem_Space *mem){
   if(!test) return -1;
   return 1;
 }
-int fragment_count (struct mem_Space *mem){
-  struct mem_Space *aux = mem;
-  int counter = 0,flag_frag = 0;
+
+int fragment_count (LL_proc *mem){
+  LL_proc *aux = mem;
+  int counter = 0, flag_frag = 0;
   while(aux != NULL){
     if (flag_frag){
       if(aux->num == 0){
@@ -107,3 +88,28 @@ int fragment_count (struct mem_Space *mem){
   }
   return counter;
 }
+
+// retorna o número de furos (fragmentos de tamanhos 1 ou 2 unidades).
+
+int fragger(LL_proc* processes) {
+  int holes = 0, counter = 0;
+  LL_proc* tmp = processes;
+  if(!tmp) return holes;
+
+  for(; tmp; tmp = tmp->nextptr) {
+    if(!tmp->num) {
+      counter++;
+      continue;
+    }
+    if(counter) {
+      counter = 0;
+      holes++;
+    }
+  }
+
+  return holes;
+}
+
+// process_id 1 1 1 1 1 0 0 0 1 2 2 2 2 0 0 0
+// mem_slot   1 2 3 4 5 6 7 8 9 10 ...
+// 

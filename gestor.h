@@ -1,3 +1,6 @@
+#ifndef _ai_ui_
+#define _ai_ui_
+
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -7,6 +10,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <pthread.h>
+
+#define MEMORY 100
 
 // STRUCT PROCESSO
 //nome -> nome do processo
@@ -79,7 +84,6 @@ void *filhoThread(void *pai);
 void percorrerIntrucoesThread(programa *progAPercorrer);
 
 //variavel que é responsavel pela memoria dos programas
-extern int memory;
 
 int mem_alloc4Fifo(processo nome);
 
@@ -87,14 +91,21 @@ int dealloc4Fifo(processo nome);
 
 int fragment4Fifo();
 
-
-struct mem_Space {
+typedef struct mem_Space {
     int num;
     struct mem_Space *nextptr;
-}*stnode;
+} LL_proc;
+
+typedef struct ideia {
+  LL_proc* head;
+  LL_proc* end;
+  size_t total;
+} LL_wrapper;
 
 struct mem_Space *createList(int n,struct mem_Space *stdnode);
 void PrintList(struct mem_Space *stdnode);
 int alocate_mem (int process_id, int num_units,struct mem_Space *mem);
 int deallocate_mem(int process_id,struct mem_Space *mem);
 int fragment_count (struct mem_Space *mem);
+
+#endif

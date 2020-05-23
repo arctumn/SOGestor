@@ -1,25 +1,32 @@
-CC=cc
-FLAGS=-c -Wall -pthread
-FLAGSO=-o gestor 
-LIBS=-lm
-OBS=main.o gestorImplementation.o #porefinir
+#Compiler
+CC=gcc
 
-#Alvo por defeito é o primeiro
+# Primeira linha = modo debug
+# Segunda = SPEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEED
+#EXEC_TYPE = -Og -g
+EXEC_TYPE = -O3
+
+FLAGS= -Wall -Wextra -Wparentheses -Wmissing-declarations -Wunreachable-code -Wunused -Wmissing-field-initializers -Wmissing-prototypes -Wswitch-enum -Wredundant-decls -Wshadow -Wswitch-default -Wuninitialized -pedantic -pthread
+FLAGSO= -o gestor 
+LIBS=
+
+GESTOR_SRC = $(wildcard *.c)
+GESTOR_OBJ = ${GESTOR_SRC:.c=.o}
+
+# make || make all
 all : gestor
+.PHONY: all
 
-gestor: main.o gestorImplementation.o
-	$(CC) $(FLAGSO) $(OBS) -pthread gestor.h escalonamentoSJF.c memory.c
-	make cleanEx
-#comentar o make cleanEx se quiserem os objetos
+gestor: ${GESTOR_OBJ}
+	$(CC) ${FLAGS} ${EXEC_TYPE} -o gestor ${GESTOR_OBJ}
+.PHONY: gestor
 
-main.o : gestor.h main.c
-	$(CC) $(FLAGS) main.c
-
-gestorImplementation.o : gestor.h gestorImplementation.c
-	$(CC) $(FLAGS) gestorImplementation.c
-
-cleanEx : 
-	rm -f *.o
-
-clean :
+# make clean
+clean:
 	rm -f *.o gestor
+.PHONY: clean
+
+# make oclean
+oclean:
+	rm -f *.o
+.PHONY: oclean

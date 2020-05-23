@@ -3,9 +3,9 @@ void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *p
     FILE *fp1 = fopen(nomeFich,"r");
     char *arraydestrings[90];
     char string[80];
-    int t = 0;
+    size_t t = 0;
     processoAtual->programMemory = 0;
-    unsigned int i = 0,c = 0,structChecker = 0;
+    size_t i = 0,c = 0,structChecker = 0;
     if (fp1 == NULL){
         perror("NAO EXISTE O FICHEIRO\n");
         return;

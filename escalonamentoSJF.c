@@ -204,6 +204,7 @@ void priority(char *listaDeProgramas){ // não pode se implementado assim e não
     free(listaProgramas);
     fclose(fp);
 }
+
 void *filhoThread(void *pai){
     if(pai == NULL){
       printf("ERRO programa não existe\n");
@@ -214,6 +215,7 @@ void *filhoThread(void *pai){
     paiF->infoProcesso.PC++;
     percorrerIntrucoesThread(paiF);
 }
+
 void percorrerIntrucoesThread(programa *progAPercorrer){
     int forkjump = 0;
     int forkFlag = 0;
