@@ -6,25 +6,26 @@
 //The program is in the portuguese language as it was part of the University course:"Sistemas Operativos"(Operative Systems) Second Semmester
 //The Documentation is also in portuguese
 //----------------------------------------------------------------------------------------------------------------------------------------
-
+int memory = 100;
+// AINDA NÃO ESTA IMPLEMENTADO
+// PARA TESTAR ALGO COMENTAR NA FORMA /**/  ESTE MAIN 
 int main(){
   int verify = 0;
   struct mem_Space *head = malloc(sizeof(struct mem_Space));
-  head = createList(YOUR_TEACHER_IS_A_DUMB_FUCK, head);
-  // PrintList(head);
-
+  head = createList(memory,head);
+  PrintList(head);
   if(head->nextptr == NULL){
     printf("ERRO NA LISTA\n");
   }
-
   verify = alocate_mem(5, 30, head);
-  
   if(verify != -1){
     printf("Percorreu%d nos\n",verify);
     PrintList(head);
   }
-  
   else printf("Erro a alocar memoria\n");
+  
+
+  
 }
 /*
 int main(){
