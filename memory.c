@@ -41,12 +41,22 @@ void PrintList(LL_proc *stdnode){
 int alocate_mem(int process_id, int num_units,LL_proc *stdnode){
   size_t nodes = 0;
   LL_proc *tmp;
-  if(!stdnode)
+  if(!stdnode){
     printf(" List is empty.");
+    nodes = -1;
+    }
   else{
     tmp = stdnode;
-    for(size_t i = 1; tmp && nodes < MEMORY+1 ; i++, nodes++, tmp = tmp->nextptr)
+    int z = 0;
+    for(size_t i = 1; tmp && nodes < MEMORY+1 ; i++, nodes++, tmp = tmp->nextptr){
+      
+      if(tmp->num == 0 && z < num_units){
+        tmp->num = process_id;
+        z++;
+      }
+
       printf(" num:%d i:%ld\n", tmp->num, i);
+      }
   }
 
   return nodes;
@@ -67,7 +77,7 @@ int deallocate_mem(int process_id,LL_proc *mem){
   return 1;
 }
 
-int fragment_count (LL_proc *mem){
+/*int fragment_count (LL_proc *mem){
   LL_proc *aux = mem;
   int counter = 0, flag_frag = 0;
   while(aux != NULL){
@@ -87,11 +97,11 @@ int fragment_count (LL_proc *mem){
     }
   }
   return counter;
-}
+}*/
 
 // retorna o número de furos (fragmentos de tamanhos 1 ou 2 unidades).
 
-int fragger(LL_proc* processes) {
+int fragment_count(LL_proc* processes) {
   int holes = 0, counter = 0;
   LL_proc* tmp = processes;
   if(!tmp) return holes;

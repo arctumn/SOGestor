@@ -7,7 +7,7 @@ void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *p
     processoAtual->programMemory = 0;
     size_t i = 0,c = 0,structChecker = 0;
     if (fp1 == NULL){
-        perror("NAO EXISTE O FICHEIRO\n");
+        perror(" NAO EXISTE O FICHEIRO\n");
         return;
     }
     while(fgets(string,sizeof(string),fp1) != 0){
@@ -63,7 +63,7 @@ void atribuidorDeInstrucoes(char *nomeFich,char **arrayFinalStrings, processo *p
     }
     processoAtual->quantidadeDeIntrucoes = c;
     if (structChecker != 6){
-        printf("Programa Invalido\n");
+        printf(" Programa Invalido\n");
         return;
     }
 }
@@ -129,7 +129,7 @@ void percorrerIntrucoes(programa *progAPercorrer){
             forkFlag = 1;
             filho(*progAPercorrer);
             progAPercorrer->infoProcesso.PC = progAPercorrer->infoProcesso.PC + forkjump;
-            printf("VALOR DO PC:%d\n",progAPercorrer->infoProcesso.PC);
+            printf(" VALOR DO PC:%d\n",progAPercorrer->infoProcesso.PC);
         }   //WAITING()
         if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"B",strlen("B")))){
             printf(" Entrei numa instruçao B \n");
@@ -152,18 +152,37 @@ void filho(programa pai){
 
 void programaRunnerFifo(char *nomeDoPrograma){ // FIFO
     char ** leitura =(char **)malloc(80*sizeof(char *));
+
+    struct mem_Space *headFifo = calloc(1,sizeof(struct mem_Space));
+
     processo A;
     programa AB;
     atribuidorDeInstrucoes(nomeDoPrograma,leitura,&A);
     AB = juntor(0,A,leitura);
+    
+    //memOPERATIONS
+    int verify = alocate_mem(AB.infoProcesso.pid, AB.infoProcesso.programMemory, headFifo);
+    if(verify == -1) printf(" Erro alocar na memoria!\n");
+      
+    //Execution
     printf("\n");
-    printf("Info do processo ->\n");
+    printf(" Info do processo ->\n");
     printf(" nome:%s pid:%d\n ppid:%d\n prioridade:%d\n tempo de vida:%d\n PC:%d\n processValue:%d\n Quantidade de intruçoes:%d Memoria do Programa:%d \n",A.nome,A.pid,A.ppid,A.prioridade,A.tempoVida,A.PC,A.processValue,A.quantidadeDeIntrucoes,A.programMemory);
-    printf("Execução do processo ->\n");
+    printf(" Execução do processo ->\n");
     percorrerIntrucoes(&AB);
+    //
+    int fragmentos = fragment_count(headFifo);
+
+    //memDeALLOC
+     deallocate_mem(A.pid,headFifo);
+    if(verify == -1) printf(" Erro a remover memoria associada\n");
+    
+    //fim deste programa
     free(leitura);
-    printf(" Counter: %d \nFim do programa:%s\n",AB.infoProcesso.PC,AB.nomeProg);
+    printf("\n-------------------\n\nFragmentos: %d Counter: %d \nFim do programa:%s\n-----------------\n",fragmentos,AB.infoProcesso.PC,AB.nomeProg);
+    free(headFifo);
 }
+
 void fifo(const char *listaDeProgramas){
     FILE *fp =fopen(listaDeProgramas,"r");
     char *arraydestrings[90];
@@ -184,7 +203,7 @@ void fifo(const char *listaDeProgramas){
         programaRunnerFifo(arraydestrings[i]);
         i++;
     }
-    printf("Precorreu %d programas\n",i);
+    printf(" Precorreu %d programas\n",i);
     fclose(fp);
 }
 
@@ -193,6 +212,7 @@ int Strlen(const char *string){
     while(string[i] != '\0') i++;
     return i;
 }
+
 void strfind(const char*string,char charProcuravel,int *pos){ 
     int i = 0;
     while(string[i] != charProcuravel) {

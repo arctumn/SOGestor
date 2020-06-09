@@ -9,6 +9,7 @@
 int memory = 100;
 // AINDA NÃO ESTA IMPLEMENTADO
 // PARA TESTAR ALGO COMENTAR NA FORMA /**/  ESTE MAIN 
+/*
 int main(){
   int verify = 0;
   struct mem_Space *head = malloc(sizeof(struct mem_Space));
@@ -21,13 +22,20 @@ int main(){
   if(verify != -1){
     printf("Percorreu%d nos\n",verify);
     PrintList(head);
+    printf("\n\n-------------------Limpar-------------------\n\n");
+    if(deallocate_mem(5,head) != -1){
+        PrintList(head);
+    }
+    else{
+     printf("Fail a limpar memoria\n");
+    }
   }
   else printf("Erro a alocar memoria\n");
   
 
   
-}
-/*
+}*/
+
 int main(){
     int option;
     printf("Escolha um metodo para percorrer os programas\n");
@@ -46,4 +54,4 @@ int main(){
     }
     //exit(0); isto era inutil porque o default nunca iria permitir que isto va acontecer
 }
-*/
+

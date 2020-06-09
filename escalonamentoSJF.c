@@ -11,7 +11,7 @@ void percorrerIntrucoesPriority(programa *progAPercorrer){
       progAPercorrer->estado = 2;
       return;
     }
-		if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"M",strlen("M")))){
+	    	if(!(strncmp(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"M",strlen("M")))){
       
             printf(" Entrei numa instruçao M \n");
             progAPercorrer->infoProcesso.processValue = atoi(strtok(progAPercorrer->listaDeIntrucoes[progAPercorrer->infoProcesso.PC],"M "));
@@ -85,33 +85,56 @@ void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta ist
   int b;
   int alias=rand()%100;
   programa espera[80] ;
+
+
+  struct mem_Space *head = calloc(1,sizeof(struct mem_Space));
+   int verify = alocate_mem(listaDeProgramas[0].infoProcesso.pid, listaDeProgramas[0].infoProcesso.programMemory, head);
+    if(verify == -1) printf(" Erro alocar na memoria!\n");
+
+
   printf("valor do count:%d\n",count);
   while(listaDeProgramas[i].nomeProg !=NULL){
     if(listaDeProgramas[i+1].arrivalTime == exTime){
-      if(listaDeProgramas[i].infoProcesso.prioridade > listaDeProgramas[i+1].infoProcesso.prioridade || (listaDeProgramas[i].nomeProg==NULL && espera[0].nomeProg!=NULL) ){        
+
+      if(listaDeProgramas[i].infoProcesso.prioridade > listaDeProgramas[i+1].infoProcesso.prioridade || (listaDeProgramas[i].nomeProg==NULL && espera[0].nomeProg!=NULL) ){
+
       printf("Menor prioridade\n");
+
+
         if(listaDeProgramas[i].nomeProg!=NULL)
           espera[t] = listaDeProgramas[i];
         
           while(listaDeProgramas[h].nomeProg !=NULL) {
+            
             printf("Entrei no avançar\n");
+
             printf("Antes nome:%s",listaDeProgramas[h].nomeProg);
             listaDeProgramas[h] = listaDeProgramas[h+1];
             printf("Depois nome:%s",listaDeProgramas[h].nomeProg);
+
             h++;
             }
+
              z = 0;
-        while(espera[z].nomeProg!=NULL){
+
+        while(espera[z].nomeProg != NULL){
+
           printf("\nentrei no while do espera\n");
           printf("z=%d\n",z);
           printf("lista de espera %s\n",espera[0].nomeProg);
+
             if(espera[z].infoProcesso.prioridade<listaDeProgramas[i].infoProcesso.prioridade){
-              printf("pus o gajo em espera a executar\n");
+
+              printf("pus o programa em espera a executar\n");
+
               programa p = listaDeProgramas[i];
               listaDeProgramas[i]=espera[z];
               espera[z]=p;
               b = 0;
-              while(listaDeProgramas[b].nomeProg != NULL){ printf("\nPrograma:%s na pos:%d\n",listaDeProgramas[b].nomeProg,b);b++;
+
+              while(listaDeProgramas[b].nomeProg != NULL){
+                 printf("\nPrograma:%s na pos:%d\n",listaDeProgramas[b].nomeProg,b);
+                 b++;
               }
             }
 
@@ -142,13 +165,31 @@ void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta ist
       }
       b = 0;
       while(1){
+
+        //fragment counter
+        int fragment = fragment_count(head);
+        printf("numero de fragmentos aqui: %d\n",fragment);
+        
+        //continuacao
         printf("Sou o programa:%s\n",listaDeProgramas[i].nomeProg);   
         if(listaDeProgramas[i].estado == 2){
+
+          //dealloc 
+          verify = deallocate_mem(listaDeProgramas[i].infoProcesso.ppid, head);
+          if(verify == -1) printf("Erro a desalocar memoria\n");
+
+          //continuacao
           if(listaDeProgramas[i+1].nomeProg == NULL){
             while(espera[0].estado != 2) {
               printf("Sou o programa:%s\n",espera[0].nomeProg);
               percorrerIntrucoesPriority(&espera[0]);
             }
+            
+            //dealloc
+            verify = deallocate_mem(espera[0].infoProcesso.ppid, head);
+            if(verify == -1) printf("Erro a desalocar memoria\n");
+
+            
           }
           //adicionar caso em que o programo morre aos 4 seg mas o outro so chega aos 7 , temos de ir ver a lista de espera
           printf("\nAcabei Este programa\n\n");
