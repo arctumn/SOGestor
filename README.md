@@ -1,6 +1,6 @@
 # SOGestor
 
-[![Run on Repl.it](https://repl.it/badge/github/arctumn/SOGestorCurrently)](https://repl.it/github/arctumn/SOGestor)
+[![Run on Repl.it](https://repl.it/badge/github/arctumn/SOGestorCurrently)](https://repl.it/github/arctumn/SOGestorCurrently)
 
 ## Parte1
 
