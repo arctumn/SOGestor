@@ -27,14 +27,16 @@ LL_proc *createList(int n,LL_proc *head){
 
 void PrintList(LL_proc *stdnode){
   LL_proc *tmp;
+  printf("\n\n\nVOU MOSTRAR A LISTA\n\n\n");
   if(!stdnode)
-    printf(" List is empty.");
+    printf("\n\n\nNao mostrei a lista\n\n\n");
   else{
     tmp = stdnode;
     for(size_t i = 1; tmp ;i++) {
       printf(" ProcessoID:%d posicao:%ld\n", tmp->num, i);
       tmp = tmp->nextptr;
     }
+    printf("\n\n\nFIM\n\n\n\n");
   }
 }
 
@@ -42,7 +44,7 @@ int alocate_mem(int process_id, int num_units,LL_proc *stdnode){
   size_t nodes = 0;
   LL_proc *tmp;
   if(!stdnode){
-    printf(" List is empty.");
+    //printf(" List is empty.");
     nodes = -1;
     }
   else{
@@ -55,7 +57,11 @@ int alocate_mem(int process_id, int num_units,LL_proc *stdnode){
         z++;
       }
 
-      printf(" num:%d i:%ld\n", tmp->num, i);
+      //printf(" num:%d i:%ld\n", tmp->num, i);
+      }
+      if (!tmp && z < num_units){
+        deallocate_mem(process_id, stdnode);
+        return -1;
       }
   }
 
@@ -73,7 +79,8 @@ int deallocate_mem(int process_id,LL_proc *mem){
     }
     aux = aux->nextptr;
   }
-  if(!test) return -1;
+  if(!test){ 
+    return -1;}
   return 1;
 }
 

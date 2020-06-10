@@ -2,6 +2,15 @@
 int exTime=0;
 
 pthread_t thread1,thread2;
+int procuraPidLista(int b, int *lista){
+  int i;
+  for(i = 0; i < (sizeof(lista)/(sizeof(*lista))); i++){
+    if(lista[1] == b)
+      return i;
+    }
+  return -1;
+}
+
 void percorrerIntrucoesPriority(programa *progAPercorrer){
     int forkjump = 0;
     int forkFlag = 0;
@@ -73,7 +82,9 @@ void percorrerIntrucoesPriority(programa *progAPercorrer){
         else {progAPercorrer->infoProcesso.PC++;exTime++;}
         printf(" PC:%d\n",progAPercorrer->infoProcesso.PC);
       
-	                                                         
+
+
+
 }
 void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta isto comparar o programa com os programas na lista de waiting
 //1-processo 3.... 2-processo 1.... 3-processo 4
@@ -83,19 +94,23 @@ void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta ist
   int h = 0;
   int t;
   int b;
+  int que = 0;
+  int memovalues = 0;
+  int pidsEmUso[1000];
   int alias=rand()%100;
-  programa espera[80] ;
+  programa espera[80];
 
 
   struct mem_Space *head = calloc(1,sizeof(struct mem_Space));
+  head = createList(MEMORY, head);
+
    int verify = alocate_mem(listaDeProgramas[0].infoProcesso.pid, listaDeProgramas[0].infoProcesso.programMemory, head);
-    if(verify == -1) printf(" Erro alocar na memoria!\n");
-
-
+    if(verify == -1) printf("\n\n------------------\nErro a alocar memoria\n------------------\n\n");
+    pidsEmUso[0] = listaDeProgramas[memovalues].infoProcesso.pid;
   printf("valor do count:%d\n",count);
   while(listaDeProgramas[i].nomeProg !=NULL){
     if(listaDeProgramas[i+1].arrivalTime == exTime){
-
+        memovalues++;
       if(listaDeProgramas[i].infoProcesso.prioridade > listaDeProgramas[i+1].infoProcesso.prioridade || (listaDeProgramas[i].nomeProg==NULL && espera[0].nomeProg!=NULL) ){
 
       printf("Menor prioridade\n");
@@ -160,23 +175,58 @@ void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta ist
         }
       }
       if(alias>70) {
+        printf("Sou o programa na lista de espera:%s\n",espera[0].nomeProg);
         percorrerIntrucoesPriority(&espera[0]);
         exTime += espera[0].infoProcesso.PC;
+        
+        //dealloc
+        if(espera[0].estado == 2){
+          que = procuraPidLista(listaDeProgramas[i].infoProcesso.pid,pidsEmUso);
+          if(que != -1) pidsEmUso[que] = -30;
+          verify = -50;
+          verify = deallocate_mem(espera[0].infoProcesso.pid, head);
+          if(verify == -1) 
+            printf("\n\nErro a desalocar memoria lista de espera\n\n");
+        }
       }
-      b = 0;
-      while(1){
 
+      b = 0;
+      
+      while(1){
+        printf("\n\nmemovalues = %d\nvalor de i = %d\n",memovalues,i);
         //fragment counter
         int fragment = fragment_count(head);
-        printf("numero de fragmentos aqui: %d\n",fragment);
+        printf("\n\n---------------\nnumero de fragmentos aqui: %d\n---------------\n\n",fragment);
         
         //continuacao
+        if(memovalues > 0){
+          if(procuraPidLista(listaDeProgramas[i].infoProcesso.pid,pidsEmUso) == -1){
+            
+            //alloc
+            verify = -50;
+            verify = alocate_mem(
+              listaDeProgramas[i].infoProcesso.pid,
+              listaDeProgramas[i].infoProcesso.quantidadeDeIntrucoes,
+              head);
+            if(verify == -1) 
+              printf("Erro a alocar memoria no programa %s\n",listaDeProgramas[i].nomeProg);
+            pidsEmUso[memovalues] = listaDeProgramas[i].infoProcesso.pid;
+          }
+        }
+          
+        
+        for(int gamma = 0; gamma<4; gamma++)printf("valor do pid: %d\n",pidsEmUso[gamma]);
+
         printf("Sou o programa:%s\n",listaDeProgramas[i].nomeProg);   
         if(listaDeProgramas[i].estado == 2){
 
-          //dealloc 
-          verify = deallocate_mem(listaDeProgramas[i].infoProcesso.ppid, head);
-          if(verify == -1) printf("Erro a desalocar memoria\n");
+          //dealloc
+          que = procuraPidLista(listaDeProgramas[i].infoProcesso.pid,pidsEmUso);
+          if(que != -1) pidsEmUso[que] = -30;
+          
+           
+          verify = deallocate_mem(listaDeProgramas[i].infoProcesso.pid, head);
+          if(verify == -1) printf("\n\n------------------\nErro a desalocar memoria\n------------------\n\n");
 
           //continuacao
           if(listaDeProgramas[i+1].nomeProg == NULL){
@@ -186,8 +236,17 @@ void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta ist
             }
             
             //dealloc
-            verify = deallocate_mem(espera[0].infoProcesso.ppid, head);
-            if(verify == -1) printf("Erro a desalocar memoria\n");
+            if(!head) printf("FIM DA LISTA\n");
+
+            que = procuraPidLista(listaDeProgramas[i].infoProcesso.pid,pidsEmUso);
+            if(que != -1) pidsEmUso[que] = -30;
+
+            printf("Sou o programa %s",espera[0].nomeProg);
+
+            verify = -50;
+            verify = deallocate_mem(espera[0].infoProcesso.pid, head);
+            if(verify == -1) 
+              printf("\n\n------------------\nErro a desalocar memoria\n------------------\n\n");
 
             
           }
@@ -197,7 +256,7 @@ void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta ist
           break;
         }
         
-        if(listaDeProgramas[i+1].arrivalTime == exTime) break;
+        if(listaDeProgramas[i+1].arrivalTime == exTime){memovalues++; break;}
         percorrerIntrucoesPriority(&listaDeProgramas[i]);
         exTime += listaDeProgramas[i].infoProcesso.PC;
       }

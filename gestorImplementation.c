@@ -154,7 +154,7 @@ void programaRunnerFifo(char *nomeDoPrograma){ // FIFO
     char ** leitura =(char **)malloc(80*sizeof(char *));
 
     struct mem_Space *headFifo = calloc(1,sizeof(struct mem_Space));
-
+    headFifo = createList(MEMORY, headFifo);
     processo A;
     programa AB;
     atribuidorDeInstrucoes(nomeDoPrograma,leitura,&A);
@@ -162,6 +162,10 @@ void programaRunnerFifo(char *nomeDoPrograma){ // FIFO
     
     //memOPERATIONS
     int verify = alocate_mem(AB.infoProcesso.pid, AB.infoProcesso.programMemory, headFifo);
+    if(!headFifo){
+        printf("\n\n\n\n\nErro a allocar memoria\n\n\n\n");
+      }
+    
     if(verify == -1) printf(" Erro alocar na memoria!\n");
       
     //Execution
@@ -174,7 +178,7 @@ void programaRunnerFifo(char *nomeDoPrograma){ // FIFO
     int fragmentos = fragment_count(headFifo);
 
     //memDeALLOC
-     deallocate_mem(A.pid,headFifo);
+    verify =  deallocate_mem(A.pid,headFifo);
     if(verify == -1) printf(" Erro a remover memoria associada\n");
     
     //fim deste programa
