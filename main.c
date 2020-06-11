@@ -41,6 +41,7 @@ int main(){
     printf("Escolha um metodo para percorrer os programas\n");
     printf("1 -> Metodo FIFO\n");
     printf("2 -> Metodo Priority (Preemptive) \n");
+    printf("3 -> Metodo de Teste 10000 gerações\n");
     scanf("%d",&option);
     switch (option){
     case 1:
@@ -48,6 +49,10 @@ int main(){
         break;
     case 2:
         priority("lista.txt");// por implementar
+        break;
+    case 3:
+        memoryTest();
+        break;
     default: //qualquer outra tecla  fecha o programa o exit fora deste switch não tem sentido
         exit(0);
         break;
