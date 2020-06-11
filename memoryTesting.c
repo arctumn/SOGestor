@@ -49,7 +49,8 @@ void memoryTest(){
   }
   
 
-  printf("\n\n-----------------TABELA-----------------\n\n");
+  printf("\n\n-----------------TABELA--------------------\n\n");
+  printf("Tamanho da memoria:%d\n",MEMORYTEST);
   printf("Sucessos a alocar memoria:%d\tFalhas a alocar memoria:%d\n",count1_success,count1_fail);
   printf("Sucessos a dealocar memoria:%d\tFalhas a dealocar memoria:%d\n",count2_success,count2_fail);
   printf("Numero de fragmentos:%d",frag);
