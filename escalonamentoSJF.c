@@ -4,8 +4,8 @@ int exTime=0;
 pthread_t thread1,thread2;
 int procuraPidLista(int b, int *lista){
   int i;
-  for(i = 0; i < (sizeof(lista)/(sizeof(*lista))); i++){
-    if(lista[1] == b)
+  for(i = 0; i < lista[i] != 0; i++){
+    if(lista[i] == b)
       return i;
     }
   return -1;
@@ -94,7 +94,7 @@ void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta ist
   int h = 0;
   int t;
   int b;
-  int que = 0;
+  int que;
   int memovalues = 0;
   int pidsEmUso[1000];
   int alias=rand()%100;
@@ -106,14 +106,33 @@ void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta ist
 
    int verify = alocate_mem(listaDeProgramas[0].infoProcesso.pid, listaDeProgramas[0].infoProcesso.programMemory, head);
     if(verify == -1) printf("\n\n------------------\nErro a alocar memoria\n------------------\n\n");
-    pidsEmUso[0] = listaDeProgramas[memovalues].infoProcesso.pid;
+    pidsEmUso[0] = listaDeProgramas[0].infoProcesso.pid;
+    memovalues++;
   printf("valor do count:%d\n",count);
-  while(listaDeProgramas[i].nomeProg !=NULL){
-    if(listaDeProgramas[i+1].arrivalTime == exTime){
-        memovalues++;
-      if(listaDeProgramas[i].infoProcesso.prioridade > listaDeProgramas[i+1].infoProcesso.prioridade || (listaDeProgramas[i].nomeProg==NULL && espera[0].nomeProg!=NULL) ){
 
-      printf("Menor prioridade\n");
+  while(listaDeProgramas[i].nomeProg != NULL){
+    printf("\n\n\n\nSou o programa:%s\n\nmemovalues:%d\n\n",listaDeProgramas[i].nomeProg,memovalues);
+    
+   
+
+
+
+    if(procuraPidLista(listaDeProgramas[i].infoProcesso.pid, pidsEmUso) == -1){
+    memovalues++;
+     verify = alocate_mem(listaDeProgramas[i].infoProcesso.pid, listaDeProgramas[i].infoProcesso.programMemory, head);
+    if(verify == -1) printf("\n\n------------------\nErro a alocar memoria\n------------------\n\n");
+    pidsEmUso[memovalues] = listaDeProgramas[i].infoProcesso.pid;
+    //break;
+    }
+    if(listaDeProgramas[i+1].arrivalTime == exTime){
+
+      verify = alocate_mem(listaDeProgramas[i+1].infoProcesso.pid, listaDeProgramas[i+1].infoProcesso.programMemory, head);
+    if(verify == -1) printf("\n\n------------------\nErro a alocar memoria\n------------------\n\n");
+    pidsEmUso[memovalues] = listaDeProgramas[memovalues].infoProcesso.pid;
+
+      if(listaDeProgramas[i].infoProcesso.prioridade < listaDeProgramas[i+1].infoProcesso.prioridade || (listaDeProgramas[i].nomeProg==NULL && espera[0].nomeProg!=NULL) ){
+
+      printf("-----------------\nMenor prioridade\n-----------------\n");
 
 
         if(listaDeProgramas[i].nomeProg!=NULL)
@@ -121,26 +140,26 @@ void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta ist
         
           while(listaDeProgramas[h].nomeProg !=NULL) {
             
-            printf("Entrei no avançar\n");
+            printf("\nEntrei no avançar\n");
 
-            printf("Antes nome:%s",listaDeProgramas[h].nomeProg);
+            printf("Antes nome:%s\n",listaDeProgramas[h].nomeProg);
             listaDeProgramas[h] = listaDeProgramas[h+1];
-            printf("Depois nome:%s",listaDeProgramas[h].nomeProg);
+            printf("Depois nome:%s\n",listaDeProgramas[h].nomeProg);
 
             h++;
             }
-
+            
              z = 0;
-
+            
         while(espera[z].nomeProg != NULL){
 
           printf("\nentrei no while do espera\n");
           printf("z=%d\n",z);
-          printf("lista de espera %s\n",espera[0].nomeProg);
+          printf("lista de espera %s\n",espera[z].nomeProg);
 
-            if(espera[z].infoProcesso.prioridade<listaDeProgramas[i].infoProcesso.prioridade){
+            if(espera[z].infoProcesso.prioridade>listaDeProgramas[i].infoProcesso.prioridade){
 
-              printf("pus o programa em espera a executar\n");
+              //printf("pus o programa em espera a executar\n");
 
               programa p = listaDeProgramas[i];
               listaDeProgramas[i]=espera[z];
@@ -215,13 +234,17 @@ void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta ist
         }
           
         
-        for(int gamma = 0; gamma<4; gamma++)printf("valor do pid: %d\n",pidsEmUso[gamma]);
+        for(int gamma = 0; pidsEmUso[gamma] != 0; gamma++)printf("valor do pid: %d\n",pidsEmUso[gamma]);
 
         printf("Sou o programa:%s\n",listaDeProgramas[i].nomeProg);   
         if(listaDeProgramas[i].estado == 2){
 
           //dealloc
           que = procuraPidLista(listaDeProgramas[i].infoProcesso.pid,pidsEmUso);
+          printf("Valor de que:%d\n",que);
+          if(pidsEmUso[que] != listaDeProgramas[i].infoProcesso.pid){
+            printf("\n\n---ERRO---\n\n");
+          }
           if(que != -1) pidsEmUso[que] = -30;
           
            
@@ -230,7 +253,7 @@ void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta ist
 
           //continuacao
           if(listaDeProgramas[i+1].nomeProg == NULL){
-            while(espera[0].estado != 2) {
+            while(espera[0].estado != 2 && espera[0].nomeProg != NULL) {
               printf("Sou o programa:%s\n",espera[0].nomeProg);
               percorrerIntrucoesPriority(&espera[0]);
             }
@@ -238,12 +261,19 @@ void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta ist
             //dealloc
             if(!head) printf("FIM DA LISTA\n");
 
-            que = procuraPidLista(listaDeProgramas[i].infoProcesso.pid,pidsEmUso);
-            if(que != -1) pidsEmUso[que] = -30;
+            
+            for(int lambda = 0; lambda <4;lambda++){
+              if(pidsEmUso[lambda] == espera[0].infoProcesso.pid) pidsEmUso[lambda] = -30;
+            }
+            //if(pidsEmUso[que] == espera[0].infoProcesso.pid) pidsEmUso[que] = -30;
+            // else printf("Valor defeituoso:%d\n",pidsEmUso[que]);
+              
+             for(int gamma = 0; pidsEmUso[gamma] != 0; gamma++)printf("valor do pid: %d\n",pidsEmUso[gamma]);
 
-            printf("Sou o programa %s",espera[0].nomeProg);
+            printf("Acabei o programa %s",espera[0].nomeProg);
 
             verify = -50;
+            printf("valor do pid:%d\n",espera[0].infoProcesso.pid);
             verify = deallocate_mem(espera[0].infoProcesso.pid, head);
             if(verify == -1) 
               printf("\n\n------------------\nErro a desalocar memoria\n------------------\n\n");
@@ -251,16 +281,19 @@ void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta ist
             
           }
           //adicionar caso em que o programo morre aos 4 seg mas o outro so chega aos 7 , temos de ir ver a lista de espera
-          printf("\nAcabei Este programa\n\n");
+          printf("\nAcabei Este programa: %s\n\n",listaDeProgramas[i].nomeProg);
           i++;
           break;
         }
         
-        if(listaDeProgramas[i+1].arrivalTime == exTime){memovalues++; break;}
+        if(listaDeProgramas[i+1].arrivalTime == exTime){
+           break;
+           }
         percorrerIntrucoesPriority(&listaDeProgramas[i]);
         exTime += listaDeProgramas[i].infoProcesso.PC;
       }
-    
+    for(int gamma = 0; pidsEmUso[gamma] != 0; gamma++)printf("valor do i:%d valor do pid: %d\n",gamma,pidsEmUso[gamma]);
+    //PrintList(head);
   }
 }
 void priority(char *listaDeProgramas){ // não pode se implementado assim e não ponhas const char isso não é sempre igual
@@ -299,7 +332,7 @@ void priority(char *listaDeProgramas){ // não pode se implementado assim e não
     if(thread1 != 0){
     pthread_join(thread1,NULL);
     }
-    printf("precorreu %d programas \n",i);
+    printf("\n\n-------------------\nprecorreu %d programas\n-------------------\n\n",i);
     free(leitura);
     free(listaProgramas);
     fclose(fp);
@@ -314,6 +347,7 @@ void *filhoThread(void *pai){
     programa *paiF = pai;
     paiF->infoProcesso.PC++;
     percorrerIntrucoesThread(paiF);
+    return NULL;
 }
 
 void percorrerIntrucoesThread(programa *progAPercorrer){
@@ -363,6 +397,6 @@ void percorrerIntrucoesThread(programa *progAPercorrer){
         else progAPercorrer->infoProcesso.PC++;
 	}
     progAPercorrer->estado = 2; //MORTO
-    printf("nome do filho:%s valor final do ProcessCounter %d\n",progAPercorrer->nomeProg,progAPercorrer->infoProcesso.PC);
+    //printf("nome do filho:%s valor final do ProcessCounter %d\n",progAPercorrer->nomeProg,progAPercorrer->infoProcesso.PC);
 }
 
