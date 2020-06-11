@@ -10,11 +10,11 @@ int tamOcupado(int *b){
 void memoryTest(){
   int MEMORYTEST = 1000;
   struct mem_Space *headTest = calloc(1,sizeof(struct mem_Space));
-  
-  int pidsEMUSO[10000];
+  int c = 0;
+  int  *pidsEMUSO = calloc(10000,sizeof(int));
 
   int randALLOC = 0, randDEALLOC = 0;
-  srand(1000);
+  srand(2);
 
   int verify_alloc = 0,verify_dealloc = 0;
   int count1_success = 0,count1_fail = 0,count2_success = 0,count2_fail = 0;
@@ -23,32 +23,39 @@ void memoryTest(){
   
   headTest = createList(MEMORYTEST, headTest);
   
-  for(int i = 0; i < 10000; i++){
+  for(int i = 1; i < 10000+1; i++){
     //alocBLOCK
     randALLOC = rand() % 3;
     verify_alloc = alocate_memTest(i, randALLOC, headTest);
     if(verify_alloc != -1) {count1_success++; pidsEMUSO[i] = randALLOC;}
     else count1_fail++;
 
+    frag += fragment_count(headTest);
     //dealocBLOCK
-    if(i == 0) continue; //caso onde não foram feitos allocs
-    randDEALLOC = rand() % tamOcupado(pidsEMUSO);
-    if(procuraPidLista(randDEALLOC,pidsEMUSO) == -1) {
-      //count2_fail++;
-      frag += fragment_count(headTest);
-      continue;
-      }
+     //caso onde não foram feitos allocs
+    
+  }
+  while(c < count1_success){
+    randDEALLOC = (rand() % count1_success)+1;
+
     verify_dealloc = deallocate_mem(randDEALLOC, headTest);
     if(verify_dealloc == -1) count2_fail++;
-    else {count2_success++; pidsEMUSO[procuraPidLista(randDEALLOC,pidsEMUSO)] = -30;}
-    frag += fragment_count(headTest); 
+    else {
+      count2_success++;
+      frag += fragment_count(headTest);
+      }
+    
+    c++; 
   }
+  
+
   printf("\n\n-----------------TABELA-----------------\n\n");
   printf("Sucessos a alocar memoria:%d\tFalhas a alocar memoria:%d\n",count1_success,count1_fail);
   printf("Sucessos a dealocar memoria:%d\tFalhas a dealocar memoria:%d\n",count2_success,count2_fail);
   printf("Numero de fragmentos:%d",frag);
   printf("\n\n-----------------FIMTABELA-----------------\n\n");
   //PrintList(headTest);
+  //free(pidsEMUSO);
   free(headTest);
 }
 
