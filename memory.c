@@ -135,6 +135,8 @@ int fragment_count(LL_proc* processes) {
   return holes;
 }
 
+
+
 // process_id 1 1 1 1 1 0 0 0 1 2 2 2 2 0 0 0
 // mem_slot   1 2 3 4 5 6 7 8 9 10 ...
 // 

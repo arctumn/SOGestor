@@ -85,11 +85,6 @@ void percorrerIntrucoesThread(programa *progAPercorrer);
 
 //variavel que é responsavel pela memoria dos programas
 
-int mem_alloc4Fifo(processo nome);
-
-int dealloc4Fifo(processo nome);
-
-int fragment4Fifo();
 
 typedef struct mem_Space {
     int num;
@@ -102,12 +97,22 @@ typedef struct ideia {
   size_t total;
 } LL_wrapper;
 
+//createlist
 struct mem_Space *createList(int n,struct mem_Space *stdnode);
+
+//printlist
 void PrintList(struct mem_Space *stdnode);
+//aloc
 int alocate_mem (int process_id, int num_units,struct mem_Space *mem);
+//dealoc
 int deallocate_mem(int process_id,struct mem_Space *mem);
+// contador de fragmentos
 int fragment_count (struct mem_Space *mem);
+//procura um elemento no array devovle a psição
 int procuraPidLista(int b, int *lista);
+//Teste
 void memoryTest();
+//alocate teste
 int alocate_memTest(int process_id, int num_units,LL_proc *stdnode);
+
 #endif

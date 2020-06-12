@@ -291,7 +291,6 @@ void programaRunnerPriority(programa *listaDeProgramas, int count){ // falta ist
       int fragment = fragment_count(head);
         printf("\n---------------\nnumero de fragmentos aqui: %d\n---------------\n\n",fragment);
     //PrintList(head);
-    free(head);
   }
 }
 void priority(char *listaDeProgramas){ // não pode se implementado assim e não ponhas const char isso não é sempre igual
