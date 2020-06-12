@@ -56,7 +56,7 @@ void memoryTest(){
   printf("Numero de fragmentos:%d",frag);
   printf("\n\n-----------------FIMTABELA-----------------\n\n");
   //PrintList(headTest);
-  //free(pidsEMUSO);
+  free(pidsEMUSO);
   free(headTest);
 }
 

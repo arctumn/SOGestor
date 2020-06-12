@@ -111,27 +111,6 @@ int deallocate_mem(int process_id,LL_proc *mem){
   return 1;
 }
 
-/*int fragment_count (LL_proc *mem){
-  LL_proc *aux = mem;
-  int counter = 0, flag_frag = 0;
-  while(aux != NULL){
-    if (flag_frag){
-      if(aux->num == 0){
-        counter++;
-        aux = aux->nextptr;
-      }
-      else {
-        flag_frag = 0;
-        aux = aux->nextptr;
-      }
-    }
-    if(aux->num != 0){
-      flag_frag = 1;
-      aux = aux ->nextptr;
-    }
-  }
-  return counter;
-}*/
 
 // retorna o número de furos (fragmentos de tamanhos 1 ou 2 unidades).
 
@@ -141,9 +120,11 @@ int fragment_count(LL_proc* processes) {
   if(!tmp) return holes;
 
   for(; tmp; tmp = tmp->nextptr) {
-    if(!tmp->num) {
-      counter++;
-      continue;
+    if(!tmp->num && tmp->nextptr) {
+      if(tmp->nextptr->nextptr && !tmp->nextptr->nextptr->num){
+        counter++;
+        continue;
+      }
     }
     if(counter) {
       counter = 0;
