@@ -42,7 +42,7 @@ int main(){
     printf("Escolha um metodo para percorrer os programas\n");
     printf("1 -> Metodo FIFO\n");
     printf("2 -> Metodo Priority (Preemptive) \n");
-    printf("3 -> Metodo SJF (Preemptive) PLZ DONT \n");
+    printf("3 -> Metodo SJF (Preemptive) \n");
     printf("4 -> Metodo de Teste 10000 gerações\n");
     scanf("%d",&option);
     switch (option){

@@ -117,4 +117,6 @@ int alocate_memTest(int process_id, int num_units,LL_proc *stdnode);
 
 void SJF(char *listaDeProgramas);
 
+void programaRunnerSJF(programa *listaDeProgramas, int count);
+
 #endif
